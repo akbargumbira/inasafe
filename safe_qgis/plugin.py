@@ -218,6 +218,23 @@ class Plugin:
         self.add_action(self.action_keywords_dialog)
 
         #--------------------------------------
+        # Create action for keywords creation wizard
+        #--------------------------------------
+        self.action_keywords_wizard = QAction(
+            QIcon(':/plugins/inasafe/show-keyword-wizard.svg'),
+            self.tr('InaSAFE Keywords Creation Wizard'),
+            self.iface.mainWindow())
+        self.action_keywords_wizard.setStatusTip(self.tr(
+            'Open InaSAFE keywords creation wizard'))
+        self.action_keywords_wizard.setWhatsThis(self.tr(
+            'Open InaSAFE keywords creation wizard'))
+        self.action_keywords_wizard.setEnabled(False)
+
+        self.action_keywords_wizard.triggered.connect(self.show_keywords_wizard)
+
+        self.add_action(self.action_keywords_wizard)
+
+        #--------------------------------------
         # Create action for options dialog
         #--------------------------------------
         self.action_options = QAction(
@@ -499,6 +516,19 @@ class Plugin:
             self.dock_widget)
         dialog.exec_()  # modal
 
+    def show_keywords_wizard(self):
+        """Show the keywords creation wizard."""
+        # import here only so that it is AFTER i18n set up
+        from safe_qgis.tools.keywords_wizard import KeywordsWizard
+
+        if self.iface.activeLayer() is None:
+            return
+        dialog = KeywordsWizard(
+            self.iface.mainWindow(),
+            self.iface,
+            self.dock_widget)
+        dialog.exec_()  # modal
+
     def show_function_browser(self):
         """Show the impact function browser tool."""
         # import here only so that it is AFTER i18n set up
@@ -543,8 +573,10 @@ class Plugin:
         """
         if layer is None:
             self.action_keywords_dialog.setEnabled(False)
+            self.action_keywords_wizard.setEnabled(False)
         else:
             self.action_keywords_dialog.setEnabled(True)
+            self.action_keywords_wizard.setEnabled(True)
 
     def shortcut_f7(self):
         """Executed when user press F7 - will show the shakemap importer."""
