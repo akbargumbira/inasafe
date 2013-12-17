@@ -888,13 +888,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="pbnFinish">
-       <property name="text">
-        <string>Finish</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
   </layout>
@@ -903,7 +896,6 @@
   <tabstop>pbnCancel</tabstop>
   <tabstop>pbnBack</tabstop>
   <tabstop>pbnNext</tabstop>
-  <tabstop>pbnFinish</tabstop>
   <tabstop>lstCategories</tabstop>
   <tabstop>lstSubcategories</tabstop>
   <tabstop>lstUnits</tabstop>

@@ -87,6 +87,7 @@ class Plugin:
         self.action_function_browser = None
         self.action_options = None
         self.action_keywords_dialog = None
+        self.action_keywords_wizard = None
         self.translator = None
         self.toolbar = None
         self.actions = []  # list of all QActions we create for InaSAFE
@@ -230,7 +231,8 @@ class Plugin:
             'Open InaSAFE keywords creation wizard'))
         self.action_keywords_wizard.setEnabled(False)
 
-        self.action_keywords_wizard.triggered.connect(self.show_keywords_wizard)
+        self.action_keywords_wizard.triggered.connect(
+            self.show_keywords_wizard)
 
         self.add_action(self.action_keywords_wizard)
 

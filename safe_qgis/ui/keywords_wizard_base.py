@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'keywords_wizard_base.ui'
 #
-# Created: Sun Dec  1 23:30:05 2013
+# Created: Thu Dec 12 20:40:39 2013
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -296,20 +296,16 @@ class Ui_KeywordsWizardBase(object):
         self.pbnNext = QtGui.QPushButton(KeywordsWizardBase)
         self.pbnNext.setObjectName(_fromUtf8("pbnNext"))
         self.horizontalLayout_2.addWidget(self.pbnNext)
-        self.pbnFinish = QtGui.QPushButton(KeywordsWizardBase)
-        self.pbnFinish.setObjectName(_fromUtf8("pbnFinish"))
-        self.horizontalLayout_2.addWidget(self.pbnFinish)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.lblSource.setBuddy(self.leSource)
         self.lblTitle.setBuddy(self.leTitle)
 
         self.retranslateUi(KeywordsWizardBase)
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(KeywordsWizardBase)
         KeywordsWizardBase.setTabOrder(self.pbnCancel, self.pbnBack)
         KeywordsWizardBase.setTabOrder(self.pbnBack, self.pbnNext)
-        KeywordsWizardBase.setTabOrder(self.pbnNext, self.pbnFinish)
-        KeywordsWizardBase.setTabOrder(self.pbnFinish, self.lstCategories)
+        KeywordsWizardBase.setTabOrder(self.pbnNext, self.lstCategories)
         KeywordsWizardBase.setTabOrder(self.lstCategories, self.lstSubcategories)
         KeywordsWizardBase.setTabOrder(self.lstSubcategories, self.lstUnits)
         KeywordsWizardBase.setTabOrder(self.lstUnits, self.leSource)
@@ -333,6 +329,5 @@ class Ui_KeywordsWizardBase(object):
         self.pbnCancel.setText(_translate("KeywordsWizardBase", "Cancel", None))
         self.pbnBack.setText(_translate("KeywordsWizardBase", "Back", None))
         self.pbnNext.setText(_translate("KeywordsWizardBase", "Next", None))
-        self.pbnFinish.setText(_translate("KeywordsWizardBase", "Finish", None))
 
 import resources_rc
