@@ -131,7 +131,7 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
         population_desc = self.tr(
             'The <b>population</b> describes the people that might be '
             'exposed to a particular hazard.')
-        building_desc = self.tr(
+        structure_desc = self.tr(
             'A <b>building</b> is a relatively permanent enclosed structure '
             'with walls and a roof.')
         road_desc = self.tr(
@@ -236,14 +236,14 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
             'subcategories': [{
                 'value': 'population',
                 'name': self.tr('population'),
-                'description': population_desc,
+                'description': population_desc
             },{
-                'value': 'buildings',
-                'name': self.tr('buildings'),
-                'description':building_desc,
+                'value': 'structure',
+                'name': self.tr('structure'),
+                'description': structure_desc
             },{
-                'value': 'roads',
-                'name': self.tr('roads'),
+                'value': 'road',
+                'name': self.tr('road'),
                 'description': road_desc
             }]
         }, {
