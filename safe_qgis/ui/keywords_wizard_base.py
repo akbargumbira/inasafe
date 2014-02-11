@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'keywords_wizard_base.ui'
 #
-# Created: Thu Dec 12 20:40:39 2013
+# Created: Tue Feb 11 22:35:40 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -315,7 +315,7 @@ class Ui_KeywordsWizardBase(object):
         KeywordsWizardBase.setWindowTitle(_translate("KeywordsWizardBase", "InaSAFE - Keywords Creation Wizard", None))
         self.lblMainTitle.setText(_translate("KeywordsWizardBase", "InaSAFE Keywords Creation Wizard...", None))
         self.lblStep.setText(_translate("KeywordsWizardBase", "[placeholder]", None))
-        self.lblSelectCategory.setText(_translate("KeywordsWizardBase", "<html><head/><body><p>By following the simple steps in this wizard, you can assign keywords to your layer. First you need to define the category of your layer.</p></body></html>", None))
+        self.lblSelectCategory.setText(_translate("KeywordsWizardBase", "<html><head/><body><p>[placeholder]</p></body></html>", None))
         self.lblDescribeCategory.setText(_translate("KeywordsWizardBase", "[placeholder]", None))
         self.lblSelectSubcategory.setText(_translate("KeywordsWizardBase", "[placeholder]", None))
         self.lblDescribeSubcategory.setText(_translate("KeywordsWizardBase", "[placeholder]", None))

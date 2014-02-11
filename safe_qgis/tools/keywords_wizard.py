@@ -65,8 +65,7 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
         self.setWindowTitle('InaSAFE')
         self.keywordIO = KeywordIO()
         # note the keys should remain untranslated as we need to write
-        # english to the keywords file. The keys will be written as user data
-        # in the list widget items.
+        # english to the keywords file.
 
         # variables for units of measure
         meters_text = self.tr(
@@ -263,6 +262,10 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
         self.layer = layer or self.iface.mapCanvas().currentLayer()
 
         #set widgets on the first tab
+        self.lblSelectCategory.setText('By following the simple steps in this '
+            'wizard, you can assign keywords to your layer: <b>%s</b>. First '
+            'you need to define the category of your layer.' % self.layer.name())
+
         for i in self.standard_categories:
             item = QListWidgetItem(i['name'], self.lstCategories)
             item.setData(QtCore.Qt.UserRole, i['value'])
