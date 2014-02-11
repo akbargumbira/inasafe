@@ -68,70 +68,135 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
         # english to the keywords file. The keys will be written as user data
         # in the list widget items.
 
+        # variables for units of measure
+        meters_text = self.tr(
+            '<i>Meters</i> are a metric unit of measure. There are 100 '
+            'centimeters in 1 meter. In this case <i>meters</i> are used to '
+            'describe the water depth.')
+        feet_text = self.tr(
+            '<i>Feet</i> are an imperial unit of measure. There are 12 '
+            'inches in 1 foot and 3 feet in 1 yard. '
+            'In this case <i>feet</i> are used to describe the water depth.')
+        wetdry_text = self.tr(
+            'This is a binary description for an area. The area is either '
+            '<i>wet<i/> (affected by flood water) or <i>dry</i> (not affected '
+            'by flood water). This unit does not describe how <i>wet</i> or '
+            '<i>dry<i/> an area is.')
+        mmi_text = self.tr(
+            'The <i>Modified Mercalli Intensity (MMI)<i/> scale describes '
+            'the intensity of ground shaking from a earthquake based on the '
+            'effects observed by people at the surface.')
+        notset_text = self.tr(
+            '<i>Not Set</i> is the default setting for when no units are '
+            'selected.')
+        kgm2_text = self.tr(
+            '<i>Kilograms per square meter</i> describes the weight in '
+            'kilograms by areas in square meters.')
+
+
+        # variables for hazard
+        flood_desc = self.tr(
+            'A <i>flood</i> describes the inundation of land that is '
+            'normally dry by a large amount of water. '
+            'For example: A <i>flood</i> can occur after heavy rainfall, '
+            'when a river overflows its banks or when a dam breaks. '
+            'The effect of a <i>flood</i> is for land that is normally dry '
+            'to become wet.')
+        tsunami_desc = self.tr(
+            'A <i>tsunami</i> describes a large ocean wave or series or '
+            'waves usually caused by an under water earthquake or volcano.'
+            'A <i>tsunami</i> at sea may go unnoticed but a <i>tsunami</i> '
+            'wave that strikes land may cause massive destruction and '
+            'flooding.')
+        earthquake_desc = self.tr(
+            'An <i>earthquake</i> describes the sudden violent shaking of the '
+            'ground that occurs as a result of volcanic activity or movement '
+            'in the earth\'s crust.')
+        tephra_desc = self.tr(
+            '<i>Tephra</i> describes the material, such as rock fragments and '
+            'ash particles ejected by a volcanic eruption.')
+        volcano_desc = self.tr(
+            'A <i>volcano</i> describes a mountain which has a vent through '
+            'which rock fragments, ash, lava, steam and gases can be ejected '
+            'from below the earth\'s surface. The type of material '
+            'ejected depends on the type of <i>volcano</i>.')
+
+        # variables for exposure
+        population_desc = self.tr(
+            'The <i>population</i> describes the people that might be '
+            'exposed to a particular hazard.')
+        building_desc = self.tr(
+            'A <i>building</i> is a relatively permanent enclosed structure '
+            'with walls and a roof.')
+        road_desc = self.tr(
+            'A <i>road</i> is a defined route used by a vehicle or people to '
+            'travel between two or more points.')
+
+
         self.standard_categories = [{
             'value': 'hazard',
             'name': self.tr('hazard'),
             'description': self.tr('A <b>hazard</b> layer represents '
                 'something that will impact the people or infrastructure '
-                'in area. For example a flood, earth quake, tsunami '
-                'inundation are all different kinds of hazards.'),
+                'in an area. For example; flood, earth quake, tsunami and  '
+                'volcano are all examples of hazards.'),
             'subcategory_question': self.tr('What kind of hazard does this '
                 'layer represent? The choice you make here will determine '
                 'which impact functions this hazard layer can be used with. '
-                'For example, if you have choose <i>flood</i> you will be '
+                'For example, if you choose <i>flood</i> you will be '
                 'able to use this hazard layer with impact functions such '
                 'as <i>flood impact on population</i>.'),
             'subcategories': [{
                 'value': 'flood',
                 'name': self.tr('flood'),
-                'description': self.tr('description of subcategory: flood'),
+                'description': flood_desc,
                 'units': [{
                     'value': 'meters',
                     'name': self.tr('meters'),
-                    'description': self.tr('description of meters')
+                    'description': meters_text
                 },{
                     'value': 'feet',
                     'name': self.tr('feet'),
-                    'description': self.tr('description of feet')
+                    'description': feet_text
                 },{
                     'value': 'wet/dry',
                     'name': self.tr('wet/dry'),
-                    'description': self.tr('description of wet/dry')
+                    'description': wetdry_text
                 }]
             },{
                 'value': 'tsunami',
                 'name': self.tr('tsunami'),
-                'description': self.tr('description of subcategory: tsunami'),
+                'description': tsunami_desc,
                 'units': [{
                     'value': 'meters',
                     'name': self.tr('meters'),
-                    'description': self.tr('description of meters')
+                    'description': meters_text
                 },{
                     'value': 'feet',
                     'name': self.tr('feet'),
-                    'description': self.tr('description of feet')
+                    'description': feet_text
                 },{
                     'value': 'wet/dry',
                     'name': self.tr('wet/dry'),
-                    'description': self.tr('description of wet/dry')
+                    'description': wetdry_text
                 }]
             },{
                 'value': 'earthquake',
                 'name': self.tr('earthquake'),
-                'description': self.tr('description of subcategory: earthquake'),
+                'description': earthquake_desc,
                 'units': [{
                     'value': 'MMI',
                     'name': self.tr('MMI'),
-                    'description': self.tr('description of MMI'),
+                    'description': mmi_text
                 },{
                     'value': '',
                     'name': self.tr('Not Set'),
-                    'description': self.tr('description of Not Set'),
+                    'description': notset_text,
                 }]
             },{
                 'value': 'tephra',
                 'name': self.tr('tephra'),
-                'description': self.tr('description of subcategory: tephra'),
+                'description': tephra_desc,
                 'units': [{
                     'value': 'kg/m2',
                     'name': self.tr('kg/m2'),
@@ -139,16 +204,16 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
                 },{
                     'value': '',
                     'name': self.tr('Not Set'),
-                    'description': self.tr('description of Not Set')
+                    'description': notset_text
                 }]
             },{
                 'value': 'volcano',
                 'name': self.tr('volcano'),
-                'description': self.tr('description of subcategory: volcano')
+                'description': volcano_desc
             },{
                 'value': '',
                 'name': self.tr('Not Set'),
-                'description': self.tr('description of subcategory: empty')
+                'description': notset_text
             }]
         }, {
             'value': 'exposure',
@@ -158,22 +223,22 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
                 'in the event of a flood, earthquake, volcano etc.'),
             'subcategory_question': self.tr('What kind of exposure does this '
                 'layer represent? The choice you make here will determine '
-                'which impact fundtions this exposure layer can be used with. '
+                'which impact functions this exposure layer can be used with. '
                 'For example, if you have choose <i>population</i> you will be '
                 'able to use this exposure layer with impact functions such as '
                 '<i>flood impact on population</i>.'),
             'subcategories': [{
                 'value': 'population',
                 'name': self.tr('population'),
-                'description': self.tr('description of subcategory: pupulation'),
+                'description': population_desc,
             },{
                 'value': 'buildings',
                 'name': self.tr('buildings'),
-                'description': self.tr('description of subcategory: buildings'),
+                'description':building_desc,
             },{
                 'value': 'roads',
                 'name': self.tr('roads'),
-                'description': self.tr('description of subcategory: roads')
+                'description': road_desc
             }]
         }, {
             'value': 'aggregation',
