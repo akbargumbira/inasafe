@@ -535,7 +535,9 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
         if step == 3: return bool(self.selected_unit())
         if step == 4: return bool(len(self.lstFields.selectedIndexes())
                                   or not self.lstFields.count())
-        if step == 5: return bool(self.leSource.text())
+        # the 'source' keyword is not required
+        #if step == 5: return bool(self.leSource.text())
+        if step == 5: return True
         if step == 6: return bool(self.leTitle.text())
 
 
