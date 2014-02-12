@@ -68,9 +68,9 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
         # english to the keywords file.
 
         # variables for units of measure
-        meters_text = self.tr(
-            '<b>Meters</b> are a metric unit of measure. There are 100 '
-            'centimeters in 1 meter. In this case <b>meters</b> are used to '
+        metres_text = self.tr(
+            '<b>metres</b> are a metric unit of measure. There are 100 '
+            'centimetres in 1 metre. In this case <b>metres</b> are used to '
             'describe the water depth.')
         feet_text = self.tr(
             '<b>Feet</b> are an imperial unit of measure. There are 12 '
@@ -89,14 +89,14 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
             '<b>Not Set</b> is the default setting for when no units are '
             'selected.')
         kgm2_text = self.tr(
-            '<b>Kilograms per square meter</b> describes the weight in '
-            'kilograms by areas in square meters.')
+            '<b>Kilograms per square metre</b> describes the weight in '
+            'kilograms by area in square metres.')
         count_text = self.tr(
             '<b>Count</b> is the number of features.')
         density_text = self.tr(
             '<b>Density</b> is the number of features within a defined '
             'area. For example <b>population density</b> might be measured '
-            'as the number of people per square kilometer.')
+            'as the number of people per square kilometre.')
 
 
         # variables for hazard
@@ -131,8 +131,10 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
             'The <b>population</b> describes the people that might be '
             'exposed to a particular hazard.')
         structure_desc = self.tr(
-            'A <b>building</b> is a relatively permanent enclosed structure '
-            'with walls and a roof.')
+            'A <b>structure</b> can be any relatively permanent man '
+            'made feature such as a building (an enclosed structure '
+            'with walls and a roof) or a telecommunications facility or a '
+            'bridge.')
         road_desc = self.tr(
             'A <b>road</b> is a defined route used by a vehicle or people to '
             'travel between two or more points.')
@@ -156,9 +158,9 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
                 'name': self.tr('flood'),
                 'description': flood_desc,
                 'units': [{
-                    'value': 'meters',
-                    'name': self.tr('meters'),
-                    'description': meters_text
+                    'value': 'metres',
+                    'name': self.tr('metres'),
+                    'description': metres_text
                 },{
                     'value': 'feet',
                     'name': self.tr('feet'),
@@ -173,9 +175,9 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
                 'name': self.tr('tsunami'),
                 'description': tsunami_desc,
                 'units': [{
-                    'value': 'meters',
-                    'name': self.tr('meters'),
-                    'description': meters_text
+                    'value': 'metres',
+                    'name': self.tr('metres'),
+                    'description': metres_text
                 },{
                     'value': 'feet',
                     'name': self.tr('feet'),
@@ -229,7 +231,7 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
             'subcategory_question': self.tr('What kind of exposure does this '
                 'layer represent? The choice you make here will determine '
                 'which impact functions this exposure layer can be used with. '
-                'For example, if you have choose <b>population</b> you will be '
+                'For example, if you choose <b>population</b> you will be '
                 'able to use this exposure layer with impact functions such as '
                 '<b>flood impact on population</b>.'),
             'subcategories': [{
@@ -249,7 +251,7 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
             'value': 'aggregation',
             'name': self.tr('aggregation'),
             'description': self.tr('An <b>aggregation</b> layer represents '
-                'regions you can use to summarize the results by. For '
+                'regions you can use to summarise the results by. For '
                 'example, we might summarise the affected people after'
                 'a flood according to city districts.')
         }]
@@ -371,7 +373,7 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
         self.lblSelectUnit.setText(self.tr('You have selected <b>%s</b> '
             'for this <b>%s</b> layer type. We need to know what units the '
             'data are in. For example in a raster layer, each cell might '
-            'represent depth in meters or depth in feet. If the dataset '
+            'represent depth in metres or depth in feet. If the dataset '
             'is a vector layer, each polygon might represent an inundated '
             'area, while ares with no polygon coverage would be assumed '
             'to be dry.') % (subcategory['name'], category['name']))
