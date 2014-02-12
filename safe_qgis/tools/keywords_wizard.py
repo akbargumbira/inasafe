@@ -144,8 +144,8 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
             'value': 'hazard',
             'name': self.tr('hazard'),
             'description': self.tr('A <b>hazard</b> layer represents '
-                'something that will impact the people or infrastructure '
-                'in an area. For example; flood, earth quake, tsunami and  '
+                'something that will impact on the people or infrastructure '
+                'in an area. For example; flood, earthquake, tsunami and  '
                 'volcano are all examples of hazards.'),
             'subcategory_question': self.tr('What kind of hazard does this '
                 'layer represent? The choice you make here will determine '
