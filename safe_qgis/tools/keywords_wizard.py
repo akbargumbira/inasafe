@@ -22,7 +22,7 @@ __copyright__ = ('Copyright 2012, Australia Indonesia Facility for '
 import logging
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import pyqtSignature
-from PyQt4.QtGui import QListWidgetItem
+from PyQt4.QtGui import QListWidgetItem, QPixmap
 
 from third_party.odict import OrderedDict
 
@@ -273,6 +273,7 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
             item.setData(QtCore.Qt.UserRole, i['value'])
             self.lstCategories.addItem(item)
         self.lblDescribeCategory.setText('')
+        self.lblIconCategory.setText('')
 
         self.pbnBack.setEnabled(False)
         self.pbnNext.setEnabled(False)
@@ -338,12 +339,13 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
 
         # set description label
         self.lblDescribeCategory.setText(category['description'])
-
+        self.lblIconCategory.setPixmap(QPixmap(':/plugins/inasafe/keyword-category-%s.svg' % (category['value'] or 'notset') ))
         # set subcategory tab widgets
         self.lstSubcategories.clear()
         self.lstUnits.clear()
         self.lstFields.clear()
         self.lblDescribeSubcategory.setText('')
+        self.lblIconSubcategory.setPixmap(QPixmap())
         if category.has_key('subcategory_question'):
             self.lblSelectSubcategory.setText(category['subcategory_question'])
             for i in category['subcategories']:
@@ -367,8 +369,9 @@ class KeywordsWizard(QtGui.QDialog, Ui_KeywordsWizardBase):
         if not subcategory:
             return
 
+        # set description label
         self.lblDescribeSubcategory.setText(subcategory['description'])
-
+        self.lblIconSubcategory.setPixmap(QPixmap(':/plugins/inasafe/keyword-subcategory-%s.svg' % (subcategory['value'] or 'notset') ))
         # set unit tab widgets
         self.lblSelectUnit.setText(self.tr('You have selected <b>%s</b> '
             'for this <b>%s</b> layer type. We need to know what units the '
