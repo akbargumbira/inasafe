@@ -192,6 +192,10 @@ class InvalidLayerError(Exception):
     pass
 
 
+class LoadingTemplateError(Exception):
+    """Raised when loading template is error."""
+
+
 class TemplateElementMissingError(Exception):
     """Raised when some element ids are missing from template."""
 
