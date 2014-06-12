@@ -541,9 +541,9 @@ class TestDock(TestCase):
 
         message = ('Result not as expected: %s' % result)
         # This is the expected number of building might be affected
-        self.assertTrue(format_int(786) in result, message)
-        self.assertTrue(format_int(15528) in result, message)
-        self.assertTrue(format_int(177) in result, message)
+        self.assertTrue(format_int(845) in result, message)
+        self.assertTrue(format_int(15524) in result, message)
+        self.assertTrue(format_int(122) in result, message)
 
     def test_run_volcano_building_impact(self):
         """Volcano function runs in GUI with An donut (merapi hazard map)
@@ -595,8 +595,8 @@ class TestDock(TestCase):
         # This is the expected number of people affected
         # Kategori	Jumlah	Kumulatif
         # Kawasan Rawan Bencana III	45.000	45.000
-        # Kawasan Rawan Bencana II	84.000	129.000
-        # Kawasan Rawan Bencana I	28.000	157.000
+        # Kawasan Rawan Bencana II	73.000	118.000
+        # Kawasan Rawan Bencana I	76.000	194.000
 
         # We could also get a memory error here so there are
         # two plausible outcomes:
@@ -606,8 +606,8 @@ class TestDock(TestCase):
             return
             # Outcome 2: It ran so check the results
         self.assertTrue(format_int(45) in result, message)
-        self.assertTrue(format_int(84) in result, message)
-        self.assertTrue(format_int(28) in result, message)
+        self.assertTrue(format_int(73) in result, message)
+        self.assertTrue(format_int(76) in result, message)
 
     def test_run_volcano_circle_population(self):
         """Volcano function runs in GUI with a circular evacuation zone.
