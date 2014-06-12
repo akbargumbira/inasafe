@@ -28,11 +28,14 @@ from qgis.core import (
 from qgis.gui import QgsMapCanvasLayer
 
 from safe.common.testing import get_qgis_app
+# In our tests, we need to have this line below before importing any other
+# safe_qgis.__init__ to load all the configurations that we make for testing
+QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
+
 from safe_qgis.safe_interface import temp_dir, unique_filename
 from safe_qgis.utilities.utilities_for_testing import load_layer
 from safe_qgis.report.map import Map
 
-QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 LOGGER = logging.getLogger('InaSAFE')
 
 
@@ -101,11 +104,12 @@ class MapTest(unittest.TestCase):
             405359,  # Ubuntu 13.04_64
             427172,  # Ubuntu 13.10_64
             138471,  # Ubuntu 14.04_64 AG
-            152326,  # Ubuntu 14.04_64 TS
+            152980,  # Ubuntu 14.04_64 TS
             414589,  # Slackware64 14.0
             144542,  # Linux Mint 14_64
+            148265,  # Windows 7 32
             150412,  # Windows 7 64
-            143836,  # UB 12.04 Jenkins
+            143652,  # UB 12.04 Jenkins
         ]
         message = '%s\nExpected rendered map pdf to be in %s, got %s' % (
             out_path, expected_sizes, out_size)
@@ -144,11 +148,12 @@ class MapTest(unittest.TestCase):
             402083,  # Ubuntu 13.04_64
             400563,  # Ubuntu 13.10_64
             76191,  # Ubuntu 14.04_64 AG
-            90046,  # Ubuntu 14.04_64 TS
+            90704,  # Ubuntu 14.04_64 TS
             367934,  # Slackware64 14.0
             82263,  # Linux Mint 14_64
+            85418,  # Windows 7 32bit
             88779,  # Windows 7 64bit
-            81557,   # Jenkins ub 12.04
+            81373,   # Jenkins ub 12.04
         ]
         message = '%s\nExpected rendered map pdf to be in %s, got %s' % (
             out_path, expected_sizes, out_size)

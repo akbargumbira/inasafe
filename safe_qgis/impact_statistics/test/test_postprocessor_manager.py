@@ -11,14 +11,11 @@ Contact : ole.moller.nielsen@gmail.com
      (at your option) any later version.
 
 """
-from safe.common.testing import get_qgis_app
-
 __author__ = 'marco@opengis.ch'
 __revision__ = '$Format:%H$'
 __date__ = '19/05/2013'
 __copyright__ = ('Copyright 2012, Australia Indonesia Facility for '
                  'Disaster Reduction')
-
 import unittest
 import sys
 import os
@@ -32,21 +29,20 @@ sys.path.append(pardir)
 #for p in sys.path:
 #    print p + '\n'
 
-#from qgis.core import QgsMapLayerRegistry
+from safe.common.testing import get_qgis_app
+# In our tests, we need to have this line below before importing any other
+# safe_qgis.__init__ to load all the configurations that we make for testing
+QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 
 from safe_qgis.utilities.utilities_for_testing import (
     set_canvas_crs,
     set_jakarta_extent,
-    GEOCRS)
-
-from safe_qgis.widgets.dock import Dock
-
-from safe_qgis.utilities.utilities_for_testing import (
+    GEOCRS,
     load_standard_layers,
     setup_scenario,
     canvas_list)
+from safe_qgis.widgets.dock import Dock
 
-QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 DOCK = Dock(IFACE)
 
 LOGGER = logging.getLogger('InaSAFE')
@@ -84,7 +80,6 @@ class PostprocessorManagerTest(unittest.TestCase):
             DOCK,
             hazard='A flood in Jakarta like in 2007',
             exposure='People',
-            function='Need evacuation',
             function_id='Flood Evacuation Function',
             aggregation_layer='kabupaten jakarta singlepart')
         assert result, message
@@ -132,7 +127,6 @@ class PostprocessorManagerTest(unittest.TestCase):
             DOCK,
             hazard='A flood in Jakarta like in 2007',
             exposure='People',
-            function='Need evacuation',
             function_id='Flood Evacuation Function')
 
         # Enable on-the-fly reprojection

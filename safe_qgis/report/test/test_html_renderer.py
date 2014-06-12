@@ -26,6 +26,9 @@ import unittest
 import logging
 
 from safe.common.testing import get_qgis_app
+# In our tests, we need to have this line below before importing any other
+# safe_qgis.__init__ to load all the configurations that we make for testing
+QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 
 from safe_qgis.safe_interface import temp_dir, unique_filename
 from safe_qgis.utilities.utilities_for_testing import (
@@ -33,7 +36,6 @@ from safe_qgis.utilities.utilities_for_testing import (
 from safe_qgis.report.html_renderer import HtmlRenderer
 from safe_qgis.utilities.keyword_io import KeywordIO
 
-QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 LOGGER = logging.getLogger('InaSAFE')
 
 
@@ -140,9 +142,10 @@ class HtmlRendererTest(unittest.TestCase):
             13965,  # as rendered on linux ub 13.10 64
             14220,  # as rendered on linux ub 13.04 64 MB
             13842,  # as rendered on linux ub 14.04 64 AG
-            20172,  # as rendered on linux ub 14.04_64 TS
+            20184,  # as rendered on linux ub 14.04_64 TS
             21287,  # as rendered on Jenkins post 19 February 2014
             377191,  # as rendered on OSX
+            17556,  # as rendered on Windows 7_32
             16163L,  # as rendered on Windows 7 64 bit Ultimate i3
             251782L,  # as rendered on Windows 8 64 bit amd
             21491,  # as rendered on Slackware64 14.0
