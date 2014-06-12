@@ -108,14 +108,13 @@ class ClipperTest(unittest.TestCase):
 
     def test_clip_raster(self):
         """Raster layers can be clipped."""
-
         # Create a raster layer
         layer_name = 'shake'
         raster_layer = QgsRasterLayer(RASTERPATH, layer_name)
 
         message = (
             'Did not find layer "%s" in path "%s"' % (layer_name, RASTERPATH))
-        assert raster_layer is not None, message
+        self.assertIsNotNone(raster_layer, message)
 
         # Create a bounding box
         bounding_box = [97, -3, 104, 1]
@@ -124,18 +123,20 @@ class ClipperTest(unittest.TestCase):
         result = clip_layer(raster_layer, bounding_box)
 
         # Check the output is valid
-        assert os.path.exists(result.source())
+        self.assertTrue(os.path.exists(result.source()))
 
         # Clip and give a desired resolution for the output
         # big pixel size
         size = 0.05
         result = clip_layer(raster_layer, bounding_box, size)
         new_raster_layer = QgsRasterLayer(result.source(), layer_name)
-        assert new_raster_layer.isValid(), 'Resampled raster is not valid'
+        self.assertTrue(
+            new_raster_layer.isValid(), 'Resampled raster is not valid')
         message = (
             'Resampled raster has incorrect pixel size. Expected: %5f, '
             'Actual: %5f' % (size, new_raster_layer.rasterUnitsPerPixelX()))
-        assert new_raster_layer.rasterUnitsPerPixelX() == size, message
+        self.assertEqual(
+            new_raster_layer.rasterUnitsPerPixelX(), size, message)
 
     def test_clip_raster_small(self):
         """Raster layers can be clipped in small and precise size. For #710."""
@@ -149,29 +150,29 @@ class ClipperTest(unittest.TestCase):
         assert raster_layer is not None, message
 
         # Create a bounding box
-        bounding_box = [97, -3, 104, 1]
+        bounding_box = [
+            98.92416217177438,
+            -0.9694880223261748,
+            100.36589093830298,
+            0.05535531773633284]
 
         # Clip the vector to the bbox
         result = clip_layer(raster_layer, bounding_box)
 
         # Check the output is valid
-        assert os.path.exists(result.source())
-
-        # Clip and give a desired resolution for the output
-
-        # small pixel size and high precision
+        self.assertTrue(os.path.exists(result.source()))
 
         # based on pixel size of Flood_Current_Depth_Jakarta_geographic.asc
-        size = 0.00045228819716
+        size = 0.00045228819715999944
         result = clip_layer(raster_layer, bounding_box, size)
         new_raster_layer = QgsRasterLayer(result.source(), layer_name)
         assert new_raster_layer.isValid(), 'Resampled raster is not valid'
         message = (
-            'Resampled raster has incorrect pixel size. Expected: %.14f, '
-            'Actual: %.14f' % (
-                size, new_raster_layer.rasterUnitsPerPixelX()))
+            'Resampled raster has incorrect pixel size. Expected: %s, '
+            'Actual: %s' % (
+                repr(size), repr(new_raster_layer.rasterUnitsPerPixelX())))
         result_size = new_raster_layer.rasterUnitsPerPixelX()
-        self.assertAlmostEqual(result_size, size, places=13, msg=message)
+        self.assertEqual(result_size, size, message)
 
     def test_clip_raster_with_no_extension(self):
         """Test we can clip a raster with no extension - see #659."""
