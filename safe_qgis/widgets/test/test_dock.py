@@ -455,7 +455,7 @@ class TestDock(TestCase):
 
         message = 'Result not as expected: %s' % result
         # This is the expected number of people needing evacuation
-        self.assertTrue(format_int(1349000) in result, message)
+        self.assertTrue(format_int(133031000) in result, message)
 
     def test_run_categorized_hazard_building_impact(self):
         """Flood function runs in GUI with Flood in Jakarta hazard data

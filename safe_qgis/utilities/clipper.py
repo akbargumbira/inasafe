@@ -493,7 +493,8 @@ def _clip_raster_layer(
         # Get the first matching gdal_translate found
         binary = binary_list[0]
         command = (
-            '"%s" -projwin %f %f %f %f -of GTiff -a_srs EPSG:4326 "%s" %s' % (
+            '"%s" -projwin %f %f %f %f -of GTiff -a_srs EPSG:4326 '
+            '-a_nodata 0 "%s" %s' % (
                 binary,
                 extent[0],
                 extent[3],
