@@ -45,7 +45,7 @@ from safe_qgis.safe_interface import (
 # pylint: disable=W0611
 # pylint: enable=W0611
 
-
+@unittest.skip('')
 class ImpactCalculatorTest(unittest.TestCase):
     """Test the InaSAFE plugin stub"""
 

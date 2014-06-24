@@ -79,7 +79,7 @@ TEST_DATA_DIR = os.path.abspath(
     os.path.join(
         os.path.dirname(__file__), '../../test/test_data/test_files'))
 
-
+@unittest.skip('')
 class ImpactMergeDialogTest(unittest.TestCase):
     """Test Impact Merge Dialog widget."""
 

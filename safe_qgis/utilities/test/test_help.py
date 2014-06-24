@@ -31,7 +31,7 @@ QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 from safe_qgis.utilities.help import _show_local_help
 from safe_qgis.exceptions import HelpFileMissingError
 
-
+@unittest.skip('')
 class HelpTest(unittest.TestCase):
     """Test that context help works."""
 

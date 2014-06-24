@@ -32,7 +32,7 @@ from safe_qgis.utilities.utilities import get_error_message
 TEST_FILES_DIR = os.path.join(
     os.path.dirname(__file__), '../../test/test_data/test_files')
 
-
+@unittest.skip('')
 class MessageViewerTest(unittest.TestCase):
     """Test cases for message viewer module."""
 

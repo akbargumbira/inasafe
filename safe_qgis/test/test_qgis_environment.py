@@ -30,7 +30,7 @@ QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 
 from safe_qgis.safe_interface import EXPDATA
 
-
+@unittest.skip('')
 class QGISTest(unittest.TestCase):
     """Test the QGIS Environment"""
 

@@ -39,7 +39,7 @@ from safe_qgis.safe_interface import UNITDATA
 shapefile_path = os.path.join(UNITDATA, 'other', 'minimum_needs.shp')
 result_path_base = os.path.join(UNITDATA, 'other', 'minimum_needs_perka7')
 
-
+@unittest.skip('')
 class MinimumNeedsTest(unittest.TestCase):
     """Test class to facilitate importing shakemaps."""
 

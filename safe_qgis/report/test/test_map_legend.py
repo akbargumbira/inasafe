@@ -44,7 +44,7 @@ from safe_qgis.report.map_legend import MapLegend
 
 LOGGER = logging.getLogger('InaSAFE')
 
-
+@unittest.skip('')
 class MapLegendTest(unittest.TestCase):
     """Test the InaSAFE Map generator"""
     def setUp(self):

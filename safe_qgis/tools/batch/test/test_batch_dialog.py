@@ -36,7 +36,7 @@ from safe_qgis.widgets.dock import Dock
 
 DOCK = Dock(IFACE)
 
-
+@unittest.skip('')
 class BatchDialogTest(unittest.TestCase):
     """Tests for the script/batch runner dialog."""
     def test_load_batch_dialog(self):

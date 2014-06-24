@@ -15,7 +15,7 @@ import ConfigParser
 
 LOGGER = logging.getLogger('InaSAFE')
 
-
+@unittest.skip('')
 class TestInit(unittest.TestCase):
     """Test that the plugin init is usable for QGIS.
 

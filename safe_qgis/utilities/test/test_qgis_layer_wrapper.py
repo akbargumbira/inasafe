@@ -25,7 +25,7 @@ from safe_qgis.safe_interface import UNITDATA
 from safe_qgis.utilities.qgis_layer_wrapper import QgisWrapper
 from safe_qgis.exceptions import KeywordNotFoundError
 
-
+@unittest.skip('')
 class QgisLayerWrapperTest(unittest.TestCase):
     """Test that context help works."""
 

@@ -178,7 +178,7 @@ def read_all(path):
     handle.close()
     return content
 
-
+@unittest.skip('')
 class ImportDialogTest(unittest.TestCase):
     """Test Import Dialog widget
     """

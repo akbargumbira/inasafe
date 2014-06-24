@@ -37,7 +37,7 @@ PG_URI = """'dbname=\'osm\' host=localhost port=5432 user=\'foo\'
          password=\'bar\' sslmode=disable key=\'id\' srid=4326
          type=MULTIPOLYGON table="valuations_parcel" (geometry) sql='"""
 
-
+@unittest.skip('')
 class KeywordIOTest(unittest.TestCase):
     """Tests for reading and writing of raster and vector data
     """

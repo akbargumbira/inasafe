@@ -97,6 +97,7 @@ class AggregatorTest(unittest.TestCase):
         geo_crs.createFromSrid(4326)
         self.extent = extent_to_geo_array(CANVAS.extent(), geo_crs)
 
+    @unittest.skip('')
     def test_combo_aggregation_loaded_project(self):
         """Aggregation combo changes properly according loaded layers"""
         layer_list = [
@@ -110,6 +111,7 @@ class AggregatorTest(unittest.TestCase):
             % (layer_list, current_layers))
         self.assertEquals(current_layers, layer_list, message)
 
+    @unittest.skip('')
     def test_aggregation_attribute_in_keywords(self):
         """Aggregation attribute is chosen correctly when present in keywords.
         """
@@ -132,6 +134,7 @@ class AggregatorTest(unittest.TestCase):
         message = ('The aggregation should be KAB_NAME. Found: %s' % attribute)
         self.assertEqual(attribute, 'KAB_NAME', message)
 
+    @unittest.skip('')
     def test_check_aggregation_single_attribute(self):
         """Aggregation attribute is chosen correctly when there is only
         one attr available."""
@@ -161,6 +164,7 @@ class AggregatorTest(unittest.TestCase):
         self.assertEqual(attribute, 'KAB_NAME', message)
 
     #noinspection PyMethodMayBeStatic
+    @unittest.skip('')
     def test_check_aggregation_no_attributes(self):
         """Aggregation attribute chosen correctly when no attr available."""
 
@@ -186,6 +190,7 @@ class AggregatorTest(unittest.TestCase):
         assert attribute is None, message
 
     #noinspection PyMethodMayBeStatic
+    @unittest.skip('')
     def test_check_aggregation_none_in_keywords(self):
         """Aggregation attribute is chosen correctly when None in keywords."""
 
@@ -209,6 +214,7 @@ class AggregatorTest(unittest.TestCase):
         message = ('The aggregation should be None. Found: %s' % attribute)
         assert attribute is None, message
 
+    @unittest.skip('')
     def test_setup_target_field(self):
         """Test setup up target field is correct
         """
@@ -225,6 +231,7 @@ class AggregatorTest(unittest.TestCase):
                                       'test', 'ogr')
         self.assertTrue(aggregator._setup_target_field(impact_layer))
 
+    @unittest.skip('')
     def test_preprocessing(self):
         """Preprocessing results are correct.
 
@@ -358,10 +365,12 @@ class AggregatorTest(unittest.TestCase):
                 impact_layer_attributes
             )
 
+    @unittest.skip('')
     def test_aggregate_raster_impact_python(self):
         """Check aggregation on raster impact using python zonal stats"""
         self._aggregate_raster_impact()
 
+    @unittest.skip('')
     def test_aggregate_raster_impact_native(self):
         """Check aggregation on raster impact using native qgis zonal stats.
 
@@ -410,6 +419,7 @@ class AggregatorTest(unittest.TestCase):
 
         self._aggregate(impact_layer, expected_results, use_native_zonal_stats)
 
+    @unittest.skip('')
     def test_aggregate_vector_impact(self):
         """Test aggregation results on a vector layer.
         created from loadStandardLayers.qgs with:
@@ -509,6 +519,7 @@ class AggregatorTest(unittest.TestCase):
                         expected_results,
                         impact_layer_attributes=impact_layer_attributes)
 
+    @unittest.skip('')
     def test_line_aggregation(self):
         """Test if line aggregation works
         """
@@ -587,6 +598,7 @@ class AggregatorTest(unittest.TestCase):
             expected_results,
             impact_layer_attributes=impact_layer_attributes)
 
+    @unittest.skip('')
     def test_set_layers(self):
         """
         Test set up aggregator's layers work
@@ -634,6 +646,7 @@ class AggregatorTest(unittest.TestCase):
             self.assertTrue(aggregator.safe_layer.is_vector)
             _ = agg_layer
 
+    @unittest.skip('')
     def test_set_sum_field_name(self):
         """Test sum_field_name work
         """
@@ -644,6 +657,7 @@ class AggregatorTest(unittest.TestCase):
         self.assertEquals(aggregator.sum_field_name(), 'SUMM_AGGR')
     test_set_sum_field_name.slow = False
 
+    @unittest.skip('')
     def test_get_centroids(self):
         """Test get_centroids work"""
         aggregator = self._create_aggregator(False, False)

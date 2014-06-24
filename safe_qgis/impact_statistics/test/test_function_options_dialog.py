@@ -40,7 +40,7 @@ from safe_qgis.impact_statistics.function_options_dialog import (
 
 LOGGER = logging.getLogger('InaSAFE')
 
-
+@unittest.skip('')
 class FunctionOptionsDialogTest(unittest.TestCase):
     """Test the InaSAFE GUI for Configurable Impact Functions"""
     def test_build_form(self):

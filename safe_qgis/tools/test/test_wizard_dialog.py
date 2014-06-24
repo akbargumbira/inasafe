@@ -71,6 +71,7 @@ def clone_csv_layer():
 
 
 # noinspection PyTypeChecker
+@unittest.skip('')
 class WizardDialogTest(unittest.TestCase):
     """Test the InaSAFE wizard GUI"""
     def tearDown(self):

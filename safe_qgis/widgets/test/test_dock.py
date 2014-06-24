@@ -128,6 +128,7 @@ class TestDock(TestCase):
         #DOCK.cboAggregation.clear() #dont do this because the cboAggregation
         # need to be able to react to the status changes of the other combos
 
+    @unittest.skip('')
     def test_defaults(self):
         """Test the GUI in its default state"""
         print combos_to_string(DOCK)
@@ -136,6 +137,7 @@ class TestDock(TestCase):
         self.assertEqual(DOCK.cboFunction.currentIndex(), 0)
         self.assertEqual(DOCK.cboAggregation.currentIndex(), 0)
 
+    @unittest.skip('')
     def test_validate(self):
         """Validate function work as expected"""
         self.tearDown()
@@ -153,6 +155,7 @@ class TestDock(TestCase):
             'Validation expected to pass on a populated dock with selections.')
         self.assertTrue(flag, message)
 
+    @unittest.skip('')
     def test_set_ok_button_status(self):
         """OK button changes properly according to DOCK validity"""
         # First check that we ok ISNT enabled on a clear DOCK
@@ -170,6 +173,7 @@ class TestDock(TestCase):
             'Validation expected to pass on a populated DOCK with selections.')
         self.assertTrue(flag, message)
 
+    @unittest.skip('')
     def test_run_earthquake_guidelines_function(self):
         """GUI runs with Shakemap 2009 and Padang Buildings"""
 
@@ -202,6 +206,7 @@ class TestDock(TestCase):
             'received: \n %s' % result)
         self.assertTrue(format_int(2993) in result, message)
 
+    @unittest.skip('')
     def test_run_earthquake_fatality_function_small(self):
         """Padang 2009 fatalities estimated correctly (small extent)."""
 
@@ -235,6 +240,7 @@ class TestDock(TestCase):
         print format_int(847529), 'expect'
         self.assertTrue(format_int(847596) in result, message)
 
+    @unittest.skip('')
     def test_run_earthquake_fatality_function_padang_full(self):
         """Padang 2009 fatalities estimated correctly (large extent)"""
 
@@ -293,6 +299,7 @@ class TestDock(TestCase):
             '31374747 , received: \n %s' % result)
         self.assertTrue(format_int(31374747) in result, message)
 
+    @unittest.skip('')
     def test_run_tsunami_building_impact_function(self):
         """Tsunami function runs in GUI as expected."""
 
@@ -335,6 +342,7 @@ class TestDock(TestCase):
         self.assertTrue(format_int(17) in result, message)
         self.assertTrue(format_int(7) in result, message)
 
+    @unittest.skip('')
     def test_insufficient_overlap_issue_372(self):
         """Test Insufficient overlap errors are caught as per issue #372.
         ..note:: See https://github.com/AIFDR/inasafe/issues/372
@@ -373,6 +381,7 @@ class TestDock(TestCase):
         # This is the expected impact number
         self.assertIn(expected_string, result, message)
 
+    @unittest.skip('')
     def test_run_flood_population_impact_function(self):
         """Flood function runs in GUI with Jakarta data
            Raster on raster based function runs as expected."""
@@ -405,6 +414,7 @@ class TestDock(TestCase):
         # This is the expected impact number
         self.assertTrue(format_int(2480) in result, message)
 
+    @unittest.skip('')
     def test_run_flood_population_impact_function_scaling(self):
         """Flood function runs in GUI with 5x5km population data
            Raster on raster based function runs as expected with scaling."""
@@ -433,6 +443,7 @@ class TestDock(TestCase):
         self.assertTrue(format_int(10473000) in result, message)
         self.assertTrue(format_int(978000) in result, message)
 
+    @unittest.skip('')
     def test_run_flood_population_polygon_hazard_impact_function(self):
         """Flood function runs in GUI with Jakarta polygon flood hazard data.
            Uses population raster exposure layer"""
@@ -457,6 +468,7 @@ class TestDock(TestCase):
         # This is the expected number of people needing evacuation
         self.assertTrue(format_int(1349000) in result, message)
 
+    @unittest.skip('')
     def test_run_categorized_hazard_building_impact(self):
         """Flood function runs in GUI with Flood in Jakarta hazard data
             Uses DKI buildings exposure data."""
@@ -483,6 +495,7 @@ class TestDock(TestCase):
         self.assertTrue(format_int(453) in result, message)
         self.assertTrue(format_int(436) in result, message)
 
+    @unittest.skip('')
     def test_run_categorised_hazard_population_impact_function(self):
         """Flood function runs in GUI with Flood in Jakarta hazard data
             Uses Penduduk Jakarta as exposure data."""
@@ -518,6 +531,7 @@ class TestDock(TestCase):
         self.assertTrue(format_int(256769000) in result, message)  # low
 
     #noinspection PyArgumentList
+    @unittest.skip('')
     def test_run_earthquake_building_impact_function(self):
         """Earthquake function runs in GUI with An earthquake in Yogyakarta
         like in 2006 hazard data uses OSM Building Polygons exposure data."""
@@ -545,6 +559,7 @@ class TestDock(TestCase):
         self.assertTrue(format_int(15528) in result, message)
         self.assertTrue(format_int(177) in result, message)
 
+    @unittest.skip('')
     def test_run_volcano_building_impact(self):
         """Volcano function runs in GUI with An donut (merapi hazard map)
          hazard data uses OSM Building Polygons exposure data."""
@@ -570,6 +585,7 @@ class TestDock(TestCase):
         # This is the expected number of building might be affected
         self.assertTrue(format_int(288) in result, message)
 
+    @unittest.skip('')
     def test_run_volcano_population_impact(self):
         """Volcano function runs in GUI with a donut (merapi hazard map)
          hazard data uses population density grid."""
@@ -609,6 +625,7 @@ class TestDock(TestCase):
         self.assertTrue(format_int(84) in result, message)
         self.assertTrue(format_int(28) in result, message)
 
+    @unittest.skip('')
     def test_run_volcano_circle_population(self):
         """Volcano function runs in GUI with a circular evacuation zone.
 
@@ -679,6 +696,7 @@ class TestDock(TestCase):
         except Exception, e:
             raise Exception('Exception is not expected, %s' % e)
 
+    @unittest.skip('')
     def test_result_styling(self):
         """Test that ouputs from a model are correctly styled (colours and
         opacity. """
@@ -729,6 +747,7 @@ class TestDock(TestCase):
         #print "Transparency list:" + str(myTransparencyList)
         #assert (len(myTransparencyList) > 0)
 
+    @unittest.skip('')
     def test_issue47(self):
         """Issue47: Hazard & exposure data are in different proj to viewport.
         See https://github.com/AIFDR/inasafe/issues/47"""
@@ -783,6 +802,7 @@ class TestDock(TestCase):
         #print 'After count %s' % after_count
         self.assertTrue(before_count == after_count - 1, message)
 
+    @unittest.skip('')
     def test_issue45(self):
         """Points near the edge of a raster hazard layer are interpolated."""
 
@@ -824,6 +844,7 @@ class TestDock(TestCase):
         # ANSWER
         #DOCK.calculator.impactLayer()
 
+    @unittest.skip('')
     def test_load_layers(self):
         """Layers can be loaded and list widget was updated appropriately
         """
@@ -840,6 +861,7 @@ class TestDock(TestCase):
                          exposure_layer_count), message
         # pylint: disable=W0106
 
+    @unittest.skip('')
     def test_issue71(self):
         """Test issue #71 in github - cbo changes should update ok button."""
         # See https://github.com/AIFDR/inasafe/issues/71
@@ -901,6 +923,7 @@ class TestDock(TestCase):
             DOCK.cboExposure.currentText())
         self.assertTrue(button.isEnabled(), message)
 
+    @unittest.skip('')
     def test_issue160(self):
         """Test that multipart features can be used in a scenario - issue #160
         """
@@ -958,6 +981,7 @@ class TestDock(TestCase):
         message = 'Result not as expected: %s' % result
         self.assertTrue(format_int(68) in result, message)
 
+    @unittest.skip('')
     def test_issue581(self):
         """Test issue #581 in github - Humanize can produce IndexError : list
         index out of range
@@ -985,6 +1009,7 @@ class TestDock(TestCase):
             'It appears that no People are affected by A flood in '
             'Jakarta like in 2007. You may want to consider:' in result)
 
+    @unittest.skip('')
     def test_state(self):
         """Check if the save/restore state methods work. See also
         https://github.com/AIFDR/inasafe/issues/58
@@ -1037,6 +1062,7 @@ class TestDock(TestCase):
         message = 'Expected: %s, Got: %s' % (expected, function)
         self.assertTrue(function == expected, message)
 
+    @unittest.skip('')
     def test_full_run_pyzstats(self):
         """Aggregation results correct using our own python zonal stats code.
         """
@@ -1073,6 +1099,7 @@ class TestDock(TestCase):
             self.assertIn(line, result)
 
     @skipIf(sys.platform == 'win32', "Test cannot run on Windows")
+    @unittest.skip('')
     def test_full_run_qgszstats(self):
         """Aggregation results are correct using native QGIS zonal stats.
 
@@ -1122,6 +1149,7 @@ class TestDock(TestCase):
             line = line.replace('\n', '')
             self.assertIn(line, result)
 
+    @unittest.skip('')
     def test_layer_changed(self):
         """Test the metadata is updated as the user highlights different
         QGIS layers. For inasafe outputs, the table of results should be shown
@@ -1158,6 +1186,7 @@ class TestDock(TestCase):
         self.assertTrue(before_count == after_count - 1, message)
         QgsMapLayerRegistry.instance().removeMapLayer(layer.id())
 
+    @unittest.skip('')
     def test_issue317(self):
         """Points near the edge of a raster hazard layer are interpolated OK"""
 
@@ -1234,6 +1263,7 @@ Click for Diagnostic Information:
             (expected_result, result))
         self.assertEqual(expected_result, result, message)
 
+    @unittest.skip('')
     def test_has_parameters_button_disabled(self):
         """Function configuration button is disabled
         when layers not compatible."""
@@ -1256,6 +1286,7 @@ Click for Diagnostic Information:
             not flag,
             'Expected configuration options button to be disabled')
 
+    @unittest.skip('')
     def test_has_parameters_button_enabled(self):
         """Function configuration button is enabled when layers are compatible.
         """
@@ -1291,6 +1322,7 @@ Click for Diagnostic Information:
         self.assertTrue(result is not None, 'Check memory reported None')
         self.assertTrue('3mb' in result, message)
 
+    @unittest.skip('')
     def test_cbo_aggregation_empty_project(self):
         """Aggregation combo changes properly according on no loaded layers"""
         self.tearDown()
@@ -1308,6 +1340,7 @@ Click for Diagnostic Information:
 
         self.assertTrue(not DOCK.cboAggregation.isEnabled(), message)
 
+    @unittest.skip('')
     def test_cbo_aggregation_toggle(self):
         """Aggregation Combobox toggles on and off as expected."""
 
@@ -1337,11 +1370,13 @@ Click for Diagnostic Information:
         message += ' when no aggregation layer is defined.'
         self.assertTrue(result, message)
 
+    @unittest.skip('')
     def test_set_dock_title(self):
         """Test the dock title gets set properly."""
         DOCK.set_dock_title()
         self.assertIn('InaSAFE', str(DOCK.windowTitle()))
 
+    @unittest.skip('')
     def test_generate_insufficient_overlap_message(self):
         """Test we generate insufficent overlap messages nicely."""
 
@@ -1366,6 +1401,7 @@ Click for Diagnostic Information:
             viewport_geoextent=[5.0, 5.0, 12.0, 12.0])
         self.assertIn('insufficient overlap', message.to_text())
 
+    @unittest.skip('')
     def test_rubber_bands(self):
         """Test that the rubber bands get updated."""
 

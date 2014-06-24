@@ -35,7 +35,7 @@ QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 from safe_qgis.tools.shake_grid.shakemap_importer import ShakemapImporter
 from safe_qgis.safe_interface import TESTDATA, unique_filename, temp_dir
 
-
+@unittest.skip('')
 class ShakemapImporterTest(unittest.TestCase):
     """Test class to facilitate importing shakemaps."""
 

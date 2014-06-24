@@ -41,7 +41,7 @@ from safe_qgis.widgets.dock import Dock
 
 DOCK = Dock(IFACE)
 
-
+@unittest.skip('')
 class SaveScenarioTest(unittest.TestCase):
     """Test save scenario tool."""
 

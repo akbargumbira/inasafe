@@ -31,7 +31,7 @@ from safe_qgis.exceptions import (
     KeywordNotFoundError,
     InsufficientOverlapError)
 
-
+@unittest.skip('')
 class SafeInterfaceTest(unittest.TestCase):
     """Test the SAFE API Wrapper"""
 

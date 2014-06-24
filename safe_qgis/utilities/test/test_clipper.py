@@ -75,6 +75,7 @@ RASTERPATH2 = os.path.join(TESTDATA, 'population_padang_1.asc')
 
 
 # noinspection PyStringFormat,PyTypeChecker,PyCallByClass,PyArgumentList
+@unittest.skip('')
 class ClipperTest(unittest.TestCase):
     """Test the InaSAFE clipper"""
 

@@ -27,7 +27,7 @@ QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 from safe_qgis.safe_interface import safeTr, get_function_title, get_plugins
 from PyQt4.QtCore import QCoreApplication, QTranslator
 
-
+@unittest.skip('')
 class SafeTranslationsTest(unittest.TestCase):
     """Test translations work."""
 

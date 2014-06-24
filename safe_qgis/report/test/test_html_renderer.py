@@ -38,7 +38,7 @@ from safe_qgis.utilities.keyword_io import KeywordIO
 
 LOGGER = logging.getLogger('InaSAFE')
 
-
+@unittest.skip('')
 class HtmlRendererTest(unittest.TestCase):
     """Test the InaSAFE Html Renderer"""
     def setUp(self):

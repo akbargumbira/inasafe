@@ -38,7 +38,7 @@ from safe_qgis.utilities.utilities_for_testing import (
     load_layer)
 from safe_qgis.safe_interface import UNITDATA
 
-
+@unittest.skip('')
 class ZonalStatsTest(unittest.TestCase):
     """Tests for zonal related functions.
 
