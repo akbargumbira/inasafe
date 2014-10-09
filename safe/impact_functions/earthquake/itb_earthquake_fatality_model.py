@@ -250,6 +250,8 @@ class ITBFatalityFunction(FunctionProvider):
 
                 exposure: Raster layer of population density
         """
+        import time
+        start_time = time.time()
 
         displacement_rate = self.parameters['displacement_rate']
 
@@ -391,6 +393,7 @@ class ITBFatalityFunction(FunctionProvider):
 
         # Extend impact report for on-screen display
         table_body.extend([TableRow(tr('Notes'), header=True),
+                           'Total IF time: %s sec' % (time.time() - start_time),
                            tr('Total population: %s') % format_int(total),
                            tr('People are considered to be displaced if '
                               'they experience and survive a shake level'

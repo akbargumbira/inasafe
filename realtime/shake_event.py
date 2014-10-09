@@ -105,6 +105,11 @@ from realtime.exceptions import (
     EventIdError)
 
 LOGGER = logging.getLogger(realtime_logger_name())
+LOGGER.disabled = True
+
+LOGGER = logging.getLogger('InaSAFE')
+LOGGER.disabled = True
+
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 
 
