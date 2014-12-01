@@ -12,7 +12,6 @@ from safe.metadata import (
     unit_wetdry,
     hazard_flood,
     layer_vector_polygon,
-    hazard_tsunami,
     exposure_road,
     unit_road_type_type,
     layer_vector_line,
@@ -42,7 +41,7 @@ class FloodVectorRoadsExperimentalFunction(FunctionProvider):
     :author Dmitry Kolesov
     :rating 1
     :param requires category=='hazard' and \
-                    subcategory in ['flood', 'tsunami'] and \
+                    subcategory=='flood' and \
                     layertype=='vector'
     :param requires category=='exposure' and \
                     subcategory in ['road'] and \
@@ -78,7 +77,7 @@ class FloodVectorRoadsExperimentalFunction(FunctionProvider):
                 'categories': {
                     'hazard': {
                         'definition': hazard_definition,
-                        'subcategory': [hazard_flood, hazard_tsunami],
+                        'subcategory': [hazard_flood],
                         'units': unit_wetdry,
                         'layer_constraints': [layer_vector_polygon]
                     },
@@ -150,13 +149,13 @@ class FloodVectorRoadsExperimentalFunction(FunctionProvider):
         hazard = hazard.get_layer()
         hazard_provider = hazard.dataProvider()
         affected_field_index = hazard_provider.fieldNameIndex(affected_field)
-        #see #818: should still work if there is no valid attribute
+        # see #818: should still work if there is no valid attribute
         if affected_field_index == -1:
             pass
             # message = tr('''Parameter "Affected Field"(='%s')
             #     is not present in the attribute table of the hazard layer.
             #     ''' % (affected_field, ))
-            #raise GetDataError(message)
+            # raise GetDataError(message)
 
         LOGGER.info('Affected field: %s' % affected_field)
         LOGGER.info('Affected field index: %s' % affected_field_index)
@@ -246,7 +245,7 @@ class FloodVectorRoadsExperimentalFunction(FunctionProvider):
             length = geom.length()
             road_len += length
 
-            if not road_type in roads_by_type:
+            if road_type not in roads_by_type:
                 roads_by_type[road_type] = {'flooded': 0, 'total': 0}
             roads_by_type[road_type]['total'] += length
 

@@ -11,7 +11,7 @@ __copyright__ = 'Copyright 2012, Australia Indonesia Facility for '
 __copyright__ += 'Disaster Reduction'
 
 # this import required to enable PyQt API v2 - DO NOT REMOVE!
-#noinspection PyUnresolvedReferences
+# noinspection PyUnresolvedReferences
 import qgis  # pylint: disable=W0611
 
 import unittest
@@ -19,8 +19,8 @@ import os
 import logging
 
 # Add PARENT directory to path to make test aware of other modules
-#pardir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-#sys.path.append(pardir)
+# pardir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+# sys.path.append(pardir)
 
 from qgis.core import (
     QgsMapLayerRegistry,
@@ -103,14 +103,18 @@ class MapTest(unittest.TestCase):
         expected_sizes = [
             405359,  # Ubuntu 13.04_64
             427172,  # Ubuntu 13.10_64
-            138991,  # Ubuntu 14.04_64 AG
-            152980,  # Ubuntu 14.04_64 TS - pycharm
-            152862,  # Ubuntu 14.04_64 TS - make - TODO why is this?
+            468836,  # Ubuntu 14.04_64 AG
+            431844,  # Ubuntu 14.04_64 TS - pycharm
+            425645,  # Ubuntu 14.04_64 TS - make - TODO why is this?
+            437994,  # Ubuntu 14.04_64 MB - pycharm
+            431844,  # Ubuntu 14.04_64 MB - make - TODO why is this?
+            435059,  # Ubuntu 14.04_64 IS - pycharm
             414589,  # Slackware64 14.0
             144542,  # Linux Mint 14_64
             148267,  # Windows 7 32
             150412,  # Windows 7 64
-            143652,  # UB 12.04 Jenkins
+            448270,  # UB 12.04 Jenkins
+            448884,  # Travis
         ]
         message = '%s\nExpected rendered map pdf to be in %s, got %s' % (
             out_path, expected_sizes, out_size)
@@ -148,14 +152,17 @@ class MapTest(unittest.TestCase):
         expected_sizes = [
             402083,  # Ubuntu 13.04_64
             400563,  # Ubuntu 13.10_64
-            76711,  # Ubuntu 14.04_64 AG
-            90704,  # Ubuntu 14.04_64 TS pycharm
-            90582,  # Ubuntu 14.04_64 TS make - TODO why is this?
+            450385,  # Ubuntu 14.04_64 AG
+            413193,  # Ubuntu 14.04_64 TS pycharm
+            413015,  # Ubuntu 14.04_64 TS make - TODO why is this?
+            419483,  # Ubuntu 14.04_64 MB pycharm
+            413193,  # Ubuntu 14.04_64 MB make - TODO why is this?
             367934,  # Slackware64 14.0
             82263,  # Linux Mint 14_64
             85418,  # Windows 7 32bit
             88779,  # Windows 7 64bit
-            81373,   # Jenkins ub 12.04
+            436118,   # Jenkins ub 12.04
+            433389,  # Travis
         ]
         message = '%s\nExpected rendered map pdf to be in %s, got %s' % (
             out_path, expected_sizes, out_size)

@@ -167,7 +167,7 @@ class FloodRasterRoadsExperimentalFunction2(FunctionProvider):
         H = H.get_layer()
         E = E.get_layer()
 
-        #reproject self.extent to the hazard projection
+        # reproject self.extent to the hazard projection
         hazard_crs = H.crs()
         hazard_authid = hazard_crs.authid()
 
@@ -179,21 +179,23 @@ class FloodRasterRoadsExperimentalFunction2(FunctionProvider):
             viewport_extent = extent_to_geo_array(
                 QgsRectangle(*self.extent), geo_crs, hazard_crs)
 
-        #Align raster extent and viewport
-        #assuming they are both in the same projection
+        # Align raster extent and viewport
+        # assuming they are both in the same projection
         raster_extent = H.dataProvider().extent()
         clip_xmin = raster_extent.xMinimum()
-        clip_xmax = raster_extent.xMaximum()
+        # clip_xmax = raster_extent.xMaximum()
         clip_ymin = raster_extent.yMinimum()
-        clip_ymax = raster_extent.yMaximum()
-        if (viewport_extent[0] > clip_xmin):
+        # clip_ymax = raster_extent.yMaximum()
+        if viewport_extent[0] > clip_xmin:
             clip_xmin = viewport_extent[0]
-        if (viewport_extent[1] > clip_ymin):
+        if viewport_extent[1] > clip_ymin:
             clip_ymin = viewport_extent[1]
-        if (viewport_extent[2] < clip_xmax):
-            clip_xmax = viewport_extent[2]
-        if (viewport_extent[3] < clip_ymax):
-            clip_ymax = viewport_extent[3]
+        # TODO: Why have these two clauses when they are not used?
+        # Commenting out for now.
+        # if viewport_extent[2] < clip_xmax:
+        #     clip_xmax = viewport_extent[2]
+        # if viewport_extent[3] < clip_ymax:
+        #     clip_ymax = viewport_extent[3]
 
         height = ((viewport_extent[3] - viewport_extent[1]) /
                   H.rasterUnitsPerPixelY())
@@ -244,7 +246,7 @@ class FloodRasterRoadsExperimentalFunction2(FunctionProvider):
                     threshold_min, ))
             raise GetDataError(message)
 
-        #reproject the flood polygons to exposure projection
+        # reproject the flood polygons to exposure projection
         exposure_crs = E.crs()
         exposure_authid = exposure_crs.authid()
 
@@ -255,12 +257,12 @@ class FloodRasterRoadsExperimentalFunction2(FunctionProvider):
                 flooded_polygon_outside, E.crs())
 
         # Clip exposure by the extent
-        #extent_as_polygon = QgsGeometry().fromRect(extent)
-        #no need to clip since It is using a bbox request
-        #line_layer = clip_by_polygon(
+        # extent_as_polygon = QgsGeometry().fromRect(extent)
+        # no need to clip since It is using a bbox request
+        # line_layer = clip_by_polygon(
         #    E,
         #    extent_as_polygon
-        #)
+        # )
         # Find inundated roads, mark them
         line_layer = split_by_polygon_in_out(
             E,
@@ -290,7 +292,7 @@ class FloodRasterRoadsExperimentalFunction2(FunctionProvider):
             length = geom.length()
             road_len += length
 
-            if not road_type in roads_by_type:
+            if road_type not in roads_by_type:
                 roads_by_type[road_type] = {'flooded': 0, 'total': 0}
             roads_by_type[road_type]['total'] += length
 
@@ -316,13 +318,17 @@ class FloodRasterRoadsExperimentalFunction2(FunctionProvider):
         impact_summary = Table(table_body).toNewlineFreeString()
         map_title = tr('Roads inundated')
 
-        style_classes = [dict(label=tr('Not Inundated'), value=0,
-                              colour='#1EFC7C', transparency=0, size=0.5),
-                         dict(label=tr('Inundated'), value=1,
-                              colour='#F31A1C', transparency=0, size=0.5)]
-        style_info = dict(target_field=target_field,
-                          style_classes=style_classes,
-                          style_type='categorizedSymbol')
+        style_classes = [
+            dict(
+                label=tr('Not Inundated'), value=0,
+                colour='#1EFC7C', transparency=0, size=0.5),
+            dict(
+                label=tr('Inundated'), value=1,
+                colour='#F31A1C', transparency=0, size=0.5)]
+        style_info = dict(
+            target_field=target_field,
+            style_classes=style_classes,
+            style_type='categorizedSymbol')
 
         # Convert QgsVectorLayer to inasafe layer and return it
         line_layer = Vector(
