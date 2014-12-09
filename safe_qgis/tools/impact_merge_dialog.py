@@ -961,7 +961,7 @@ class ImpactMergeDialog(QDialog, Ui_ImpactMergeDialogBase):
 
         Validate it as well. The template needs to have:
         1. QgsComposerMap with id 'impact-map' for merged impact map.
-        2. QgsComposerPicture with id 'safe-logo' for InaSAFE logo.
+        2. QgsComposerPicture with id 'safe_core-logo' for InaSAFE logo.
         3. QgsComposerLabel with id 'summary-report' for a summary of two
         impacts.
         4. QgsComposerLabel with id 'aggregation-area' to indicate the area
@@ -1007,7 +1007,7 @@ class ImpactMergeDialog(QDialog, Ui_ImpactMergeDialogBase):
                 self.template_path)
 
         # Validate all needed composer components
-        component_ids = ['impact-map', 'safe-logo', 'summary-report',
+        component_ids = ['impact-map', 'safe_core-logo', 'summary-report',
                          'aggregation-area', 'map-scale', 'map-legend',
                          'organisation-logo', 'merged-report-table']
         for component_id in component_ids:
@@ -1017,7 +1017,7 @@ class ImpactMergeDialog(QDialog, Ui_ImpactMergeDialogBase):
                     'Component %s could not be found' % component_id))
 
         # Set InaSAFE logo
-        safe_logo = composition.getComposerItemById('safe-logo')
+        safe_logo = composition.getComposerItemById('safe_core-logo')
         safe_logo.setPictureFile(self.safe_logo_path)
 
         # set organisation logo

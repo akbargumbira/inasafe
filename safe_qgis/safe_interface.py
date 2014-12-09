@@ -34,7 +34,7 @@ import logging
 # modules in safe_qgis
 # noinspection PyUnresolvedReferences
 
-from safe.api import (
+from safe_core.api import (
     load_plugins,
     get_admissible_plugins,
     get_function_title,
@@ -93,7 +93,7 @@ from safe.api import (
 # hack for excluding test-related import in builded package
 
 try:
-    from safe.api import (
+    from safe_core.api import (
         HAZDATA, EXPDATA, TESTDATA, UNITDATA, BOUNDDATA)
 except ImportError:
     pass
@@ -128,7 +128,7 @@ def tr(text):
 
 
 def verify(statement, message=None):
-    """This is just a thin wrapper around safe.api.verify.
+    """This is just a thin wrapper around safe_core.api.verify.
 
     Args:
         * theStatement - expression to verify
@@ -153,7 +153,7 @@ def get_optimal_extent(
     to ensure that the extent is tenable, includes data from both
     etc.
 
-    This is just a thin wrapper around safe.storage.utilities.bbox_intersection
+    This is just a thin wrapper around safe_core.storage.utilities.bbox_intersection
 
     Typically the result of this function will be used to clip
     input layers to a common extent before processing.
@@ -371,7 +371,7 @@ def read_file_keywords(layer_path, keyword=None):
 
 
 def write_keywords_to_file(filename, keywords):
-    """Thin wrapper around the safe write_keywords function.
+    """Thin wrapper around the safe_core write_keywords function.
 
     Args:
         * filename - str representing path to layer that must be written.
@@ -437,12 +437,12 @@ def make_ascii(x):
 
 
 def read_safe_layer(path):
-    """Thin wrapper around the safe read_layer function.
+    """Thin wrapper around the safe_core read_layer function.
 
     Args:
         path - str representing path to layer that must be opened.
     Returns:
-        A safe read_safe_layer object is returned.
+        A safe_core read_safe_layer object is returned.
     Raises:
         Any exceptions are propagated
     """
@@ -453,18 +453,18 @@ def read_safe_layer(path):
 
 
 def convert_to_safe_layer(layer):
-    """Thin wrapper around the safe read_layer function.
+    """Thin wrapper around the safe_core read_layer function.
 
     Args:
         layer - QgsMapLayer or Safe layer.
     Returns:
-        A safe read_safe_layer object is returned.
+        A safe_core read_safe_layer object is returned.
     Raises:
         Any exceptions are propagated
     """
     # FIXME (DK): it is a stub now.
     #   Do not call read_safe_layer, but write function
-    #     safe.storage.core.convert_layer to convert QgsMapLayer to SAFE layer
+    #     safe_core.storage.core.convert_layer to convert QgsMapLayer to SAFE layer
 
     if isinstance(layer, Layer):
         return layer
@@ -475,13 +475,13 @@ def convert_to_safe_layer(layer):
 
 
 def get_safe_impact_function(function=None):
-    """Thin wrapper around the safe impact_functions function.
+    """Thin wrapper around the safe_core impact_functions function.
 
     Args:
         function - optional str giving a specific plugins name that should
         be fetched.
     Returns:
-        A safe impact function is returned
+        A safe_core impact function is returned
     Raises:
         Any exceptions are propagated
     """
@@ -497,8 +497,8 @@ def get_safe_impact_function_type(function_id):
         function_id - str giving a specific plugins name that should be
         fetched.
     Returns:
-        A str type of safe impact function is returned:
-            'old-style' is "classic" safe impact function
+        A str type of safe_core impact function is returned:
+            'old-style' is "classic" safe_core impact function
             'qgis2.0'   is impact function with native qgis layers support
     Raises:
         Any exceptions are propagated
@@ -520,7 +520,7 @@ def get_safe_impact_function_type(function_id):
 
 def calculate_safe_impact(
         layers, function, extent=None, check_integrity=True):
-    """Thin wrapper around the safe calculate_impact function.
+    """Thin wrapper around the safe_core calculate_impact function.
 
     Args:
         * layers - a list of layers to be used. They should be ordered
@@ -532,7 +532,7 @@ def calculate_safe_impact(
                 input data integrity before running
                 impact calculation
     Returns:
-        A safe impact function is returned
+        A safe_core impact function is returned
     Raises:
         Any exceptions are propagated
     """

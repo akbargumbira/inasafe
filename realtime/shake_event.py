@@ -72,11 +72,11 @@ from qgis.core import (
 
 # pylint: enable=E0611
 # pylint: enable=W0611
-from safe.common.testing import get_qgis_app
-from safe.api import get_plugins as safe_get_plugins
-from safe.api import read_layer as safe_read_layer
-from safe.api import calculate_impact as safe_calculate_impact
-from safe.api import (
+from safe_core.common.testing import get_qgis_app
+from safe_core.api import get_plugins as safe_get_plugins
+from safe_core.api import read_layer as safe_read_layer
+from safe_core.api import calculate_impact as safe_calculate_impact
+from safe_core.api import (
     Table,
     TableCell,
     TableRow,
@@ -899,7 +899,7 @@ class ShakeEvent(QObject):
 
         :returns:
             two tuple of:
-                A Table object (see :func:`safe.impact_functions.tables.Table`)
+                A Table object (see :func:`safe_core.impact_functions.tables.Table`)
                 A file path to the html file saved to disk.
 
         :raise: Propagates any exceptions.

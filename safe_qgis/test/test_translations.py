@@ -19,7 +19,7 @@ import unittest
 import os
 import re
 
-from safe.common.testing import get_qgis_app
+from safe_core.common.testing import get_qgis_app
 # In our tests, we need to have this line below before importing any other
 # safe_qgis.__init__ to load all the configurations that we make for testing
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
@@ -98,7 +98,7 @@ class SafeTranslationsTest(unittest.TestCase):
         parent_path = os.path.join(__file__, os.path.pardir, os.path.pardir)
         dir_path = os.path.abspath(parent_path)
         file_path = os.path.join(
-            dir_path, '../safe', 'common', 'dynamic_translations.py')
+            dir_path, '../safe_core', 'common', 'dynamic_translations.py')
         translations_file = file(file_path)
         failure_list = []
         os.environ['LANG'] = 'id'

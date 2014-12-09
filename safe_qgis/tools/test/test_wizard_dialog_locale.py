@@ -29,9 +29,9 @@ skipped_reason = (
 class TestWizardDialogLocale(unittest.TestCase):
     """Test for Wizard Dialog in Locale mode."""
     def setUp(self):
-        if 'safe.metadata' in sys.modules.keys():
-            del sys.modules['safe.metadata']
-        self.assertFalse('safe.metadata' in sys.modules.keys())
+        if 'safe_core.metadata' in sys.modules.keys():
+            del sys.modules['safe_core.metadata']
+        self.assertFalse('safe_core.metadata' in sys.modules.keys())
         os.environ['LANG'] = 'id'
 
     def tearDown(self):
@@ -110,7 +110,7 @@ class TestWizardDialogLocale(unittest.TestCase):
             clone_shp_layer, remove_vector_temp_file)
         from safe_qgis.safe_interface import BOUNDDATA
 
-        from safe.common.testing import get_qgis_app
+        from safe_core.common.testing import get_qgis_app
         # Get QGis app handle
         # noinspection PyPep8Naming
         _, _, IFACE, PARENT = get_qgis_app()
@@ -138,7 +138,7 @@ class TestWizardDialogLocale(unittest.TestCase):
             clone_shp_layer, remove_vector_temp_file)
         layer = clone_shp_layer(include_keywords=True)
 
-        from safe.common.testing import get_qgis_app
+        from safe_core.common.testing import get_qgis_app
         # Get QGis app handle
         # noinspection PyPep8Naming
         _, _, IFACE, PARENT = get_qgis_app()

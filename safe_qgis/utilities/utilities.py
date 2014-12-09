@@ -470,13 +470,13 @@ def impact_attribution(keywords, inasafe_flag=False):
     exposure_source_keyword = 'exposure_source'
 
     if hazard_title_keywords in keywords:
-        # We use safe translation infrastructure for this one (rather than Qt)
+        # We use safe_core translation infrastructure for this one (rather than Qt)
         hazard_title = safeTr(keywords[hazard_title_keywords])
     else:
         hazard_title = tr('Hazard layer')
 
     if hazard_source_keywords in keywords:
-        # We use safe translation infrastructure for this one (rather than Qt)
+        # We use safe_core translation infrastructure for this one (rather than Qt)
         hazard_source = safeTr(keywords[hazard_source_keywords])
     else:
         hazard_source = tr('an unknown source')
@@ -689,7 +689,7 @@ def viewport_geo_array(map_canvas):
 
 
 def read_impact_layer(impact_layer):
-    """Helper function to read and validate a safe native spatial layer.
+    """Helper function to read and validate a safe_core native spatial layer.
 
     :param impact_layer: Layer object as provided by InaSAFE engine.
     :type impact_layer: read_layer

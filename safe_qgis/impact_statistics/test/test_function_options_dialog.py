@@ -22,7 +22,7 @@ import logging
 # noinspection PyPackageRequirements
 from PyQt4.QtGui import QLineEdit, QCheckBox
 
-from safe.common.testing import get_qgis_app
+from safe_core.common.testing import get_qgis_app
 from safe_extras.parameters.resource_parameter import ResourceParameter
 # In our tests, we need to have this line below before importing any other
 # safe_qgis.__init__ to load all the configurations that we make for testing
@@ -49,7 +49,7 @@ class FunctionOptionsDialogTest(unittest.TestCase):
         """
         # noinspection PyUnresolvedReferences
         # pylint: disable=W0612
-        from safe.engine.impact_functions_for_testing import \
+        from safe_core.engine.impact_functions_for_testing import \
             itb_fatality_model_configurable
         # pylint: enable=W0612
         function_id = 'I T B Fatality Function Configurable'

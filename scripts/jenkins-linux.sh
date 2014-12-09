@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # You can use this script as the 'execute shell' in a jenkins job.
-# For example, set the 'command' contents to this to run the safe package tests:
+# For example, set the 'command' contents to this to run the safe_core package tests:
 #
 # #!/bin/bash
 # scripts/jenkins-linux.sh
@@ -82,8 +82,8 @@ echo "Running tests in $PATH"
 
 #Go on with metrics and tests
 make clean
-if [[ ${TEST_PACKAGE} == 'safe' ]] || [[ ${TEST_PACKAGE} == 'realtime' ]]; then
-    # special case for safe or realtime package
+if [[ ${TEST_PACKAGE} == 'safe_core' ]] || [[ ${TEST_PACKAGE} == 'realtime' ]]; then
+    # special case for safe_core or realtime package
     TEST_PATH="$DIR/$TEST_PACKAGE"
     xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -v \
         --with-id --with-xcoverage --with-xunit --verbose \

@@ -24,7 +24,7 @@ from qgis.core import QgsFeatureRequest
 
 from collections import OrderedDict
 
-from safe.common.utilities import unhumanize_number, format_int
+from safe_core.common.utilities import unhumanize_number, format_int
 
 from safe_qgis.utilities.keyword_io import KeywordIO
 from safe_qgis.safe_interface import (

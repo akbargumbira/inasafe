@@ -7,11 +7,11 @@ import os
 import argparse
 
 
-from safe.storage.vector import Vector
+from safe_core.storage.vector import Vector
 
 from realtime.netcdf_utilities import convert_netcdf2tif
-from safe.storage.core import read_layer
-from safe.engine.interpolation import tag_polygons_by_grid
+from safe_core.storage.core import read_layer
+from safe_core.engine.interpolation import tag_polygons_by_grid
 
 
 def usage():

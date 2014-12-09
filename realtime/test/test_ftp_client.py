@@ -23,7 +23,7 @@ import re
 import os
 import shutil
 
-from safe.api import temp_dir, get_shake_test_data_path
+from safe_core.api import temp_dir, get_shake_test_data_path
 from realtime.ftp_client import FtpClient
 
 

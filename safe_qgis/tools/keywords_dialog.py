@@ -41,7 +41,7 @@ from safe_qgis.exceptions import (
     HashNotFoundError,
     NoKeywordsFoundError)
 from safe_qgis.safe_interface import DEFAULTS
-from safe.api import metadata
+from safe_core.api import metadata
 
 # Aggregations' keywords
 female_ratio_attribute_key = DEFAULTS['FEMALE_RATIO_ATTR_KEY']

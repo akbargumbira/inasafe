@@ -27,7 +27,7 @@ import qgis  # pylint: disable=W0611
 # noinspection PyPackageRequirements
 from PyQt4.QtGui import QDialogButtonBox
 
-from safe.common.testing import get_qgis_app, get_shake_test_data_path
+from safe_core.common.testing import get_qgis_app, get_shake_test_data_path
 # In our tests, we need to have this line below before importing any other
 # safe_qgis.__init__ to load all the configurations that we make for testing
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()

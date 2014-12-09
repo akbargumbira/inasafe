@@ -221,7 +221,7 @@ def main():
         # do_something_here()
         update_report(source_path, public_path, last_event_id)
     else:
-        print 'Not new eq impact, everything is safe.'
+        print 'Not new eq impact, everything is safe_core.'
 
 if __name__ == '__main__':
     main()

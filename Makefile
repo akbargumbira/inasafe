@@ -18,7 +18,7 @@
 
 # Makefile for InaSAFE - QGIS
 SHELL := /bin/bash
-NONGUI := safe
+NONGUI := safe_core
 GUI := gui
 ALL := $(NONGUI) $(GUI)  # Would like to turn this into comma separated list using e.g. $(subst,...) or $(ALL, Wstr) but None of that works as described in the various posts
 
@@ -51,7 +51,7 @@ update-translation-strings: compile
 #Qt .qm file updates - run to create binary representation of translated strings for translation in safe_qgis
 compile-translation-strings: compile
 	@#compile gettext messages binary
-	$(foreach LOCALE, $(LOCALES), msgfmt --statistics -o safe/i18n/$(LOCALE)/LC_MESSAGES/inasafe.mo safe/i18n/$(LOCALE)/LC_MESSAGES/inasafe.po;)
+	$(foreach LOCALE, $(LOCALES), msgfmt --statistics -o safe_core/i18n/$(LOCALE)/LC_MESSAGES/inasafe.mo safe_core/i18n/$(LOCALE)/LC_MESSAGES/inasafe.po;)
 	@#Compile qt messages binary
 	cd safe_qgis; lrelease-qt4 inasafe.pro; cd ..
 
@@ -70,7 +70,7 @@ translation-stats:
 	@echo
 	@echo "Gettext translations (*.po):"
 	@echo "----------------------------"
-	@$(foreach LOCALE,$(LOCALES), echo 'Locale: $(LOCALE)'; msgfmt --statistics safe/i18n/$(LOCALE)/LC_MESSAGES/inasafe.po;)
+	@$(foreach LOCALE,$(LOCALES), echo 'Locale: $(LOCALE)'; msgfmt --statistics safe_core/i18n/$(LOCALE)/LC_MESSAGES/inasafe.po;)
 	@echo
 	@echo "Qt translations (*.ts):"
 	@echo "----------------------------"
@@ -82,7 +82,7 @@ lines-of-code:
 	@echo " Generated using David A. Wheeler's 'SLOCCount'"
 	@echo "----------------------"
 	@git log | head -3
-	@sloccount safe_qgis safe safe_api.py realtime | grep '^[0-9]'
+	@sloccount safe_qgis safe_core safe_api.py realtime | grep '^[0-9]'
 
 changelog:
 	@echo "----------------------"
@@ -128,7 +128,7 @@ qgis2test: clean pep8 pylint dependency_test unwanted_strings run_data_audit tes
 quicktest: pep8 pylint dependency_test unwanted_strings run_data_audit test-translations test_suite_quick
 
 test_suite_quick:
-	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); nosetests -A 'not slow' -v safe --stop
+	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); nosetests -A 'not slow' -v safe_core --stop
 
 # Run pep8 style checking
 #http://pypi.python.org/pypi/pep8
@@ -145,20 +145,20 @@ test_suite: compile testdata
 	@echo "---------------------"
 	@echo "Regression Test Suite"
 	@echo "---------------------"
-	@-export PYTHONPATH=`pwd`:$(PYTHONPATH);export QGIS_DEBUG=0;export QGIS_LOG_FILE=/dev/null;export QGIS_DEBUG_FILE=/dev/null;nosetests -v --with-id --with-coverage --cover-package=safe,safe_qgis safe safe_qgis 3>&1 1>&2 2>&3 3>&- || true
+	@-export PYTHONPATH=`pwd`:$(PYTHONPATH);export QGIS_DEBUG=0;export QGIS_LOG_FILE=/dev/null;export QGIS_DEBUG_FILE=/dev/null;nosetests -v --with-id --with-coverage --cover-package=safe_core,safe_qgis safe_core safe_qgis 3>&1 1>&2 2>&3 3>&- || true
 
 	@# Report expected failures if any!
 	@#echo Expecting 1 test to fail in support of issue #3
 	@#echo Expecting 1 test to fail in support of issue #160
 
-# Run safe package tests only
+# Run safe_core package tests only
 safe_test_suite: compile testdata
 	@echo
 	@echo "---------------------"
 	@echo "Safe Regression Test Suite"
 	@echo "---------------------"
 	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); nosetests -v --with-id \
-	--with-coverage --cover-package=safe safe  3>&1 1>&2 2>&3 3>&- || true
+	--with-coverage --cover-package=safe_core safe_core  3>&1 1>&2 2>&3 3>&- || true
 
 # Run gui test suite only
 gui_test_suite: compile testdata
@@ -173,13 +173,13 @@ gui_test_suite: compile testdata
 	#Quiet version
 	@-export PYTHONPATH=`pwd`:$(PYTHONPATH);export QGIS_DEBUG=0;export QGIS_LOG_FILE=/dev/null;export QGIS_DEBUG_FILE=/dev/null;nosetests -v --with-id --with-coverage --cover-package=safe_qgis safe_qgis 3>&1 1>&2 2>&3 3>&- || true
 
-# This one includes safe, safe_qgis and realtime and runs against QGIS v2
+# This one includes safe_core, safe_qgis and realtime and runs against QGIS v2
 qgis2_test_suite: compile testdata
 	@echo
 	@echo "---------------------"
 	@echo "Regression Test Suite"
 	@echo "---------------------"
-	@-export PYTHONPATH=`pwd`:$(PYTHONPATH);export QGIS_DEBUG=0;export QGIS_LOG_FILE=/dev/null;export QGIS_DEBUG_FILE=/dev/null;nosetests -v --with-id --with-coverage --cover-package=safe,safe_qgis safe safe_qgis 3>&1 1>&2 2>&3 3>&- | true
+	@-export PYTHONPATH=`pwd`:$(PYTHONPATH);export QGIS_DEBUG=0;export QGIS_LOG_FILE=/dev/null;export QGIS_DEBUG_FILE=/dev/null;nosetests -v --with-id --with-coverage --cover-package=safe_core,safe_qgis safe_core safe_qgis 3>&1 1>&2 2>&3 3>&- | true
 
 # Run realtime test suite only
 realtime_test_suite:
@@ -246,9 +246,9 @@ dependency_test:
 	@# 1
 	@# See http://stackoverflow.com/questions/4761728/gives-an-error-in-makefile-not-in-bash-when-grep-output-is-empty why we need "|| true"
 
-	@# Since InaSAFE 2.0 we now can use PyQt4 libs in safe lib
+	@# Since InaSAFE 2.0 we now can use PyQt4 libs in safe_core lib
 	@#grep -R PyQt4 $(NONGUI) | grep -v gui_example.py | grep -v message_element|| true
-	@# Since InaSAFE 2.0 we now can use qgis libs in safe lib
+	@# Since InaSAFE 2.0 we now can use qgis libs in safe_core lib
 	@#grep -R qgis.core $(NONGUI) || true
 	@grep -R "import scipy" $(NONGUI) || true
 	@grep -R "from scipy import" $(NONGUI) || true
@@ -283,28 +283,28 @@ pylint-count:
 	@echo "Number of pylint violations"
 	@echo "For details run make pylint"
 	@echo "---------------------------"
-	@pylint --output-format=parseable --reports=n --rcfile=pylintrc safe safe_qgis realtime | wc -l
+	@pylint --output-format=parseable --reports=n --rcfile=pylintrc safe_core safe_qgis realtime | wc -l
 
 pylint:
 	@echo
 	@echo "-----------------"
 	@echo "Pylint violations"
 	@echo "-----------------"
-	@pylint --reports=n --rcfile=pylintrc safe safe_qgis realtime || true
+	@pylint --reports=n --rcfile=pylintrc safe_core safe_qgis realtime || true
 
 profile:
 	@echo
 	@echo "----------------"
 	@echo "Profiling engine"
 	@echo "----------------"
-	python -m cProfile safe/engine/test_engine.py -s time
+	python -m cProfile safe_core/engine/test_engine.py -s time
 
 pyflakes:
 	@echo
 	@echo "---------------"
 	@echo "PyFlakes issues"
 	@echo "---------------"
-	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); pyflakes safe safe_qgis realtime | wc -l
+	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); pyflakes safe_core safe_qgis realtime | wc -l
 
 indent:
 	@echo
@@ -343,7 +343,7 @@ jenkins-test: testdata clean
 	@echo "Regression Test Suite for Jenkins"
 	@echo " against QGIS 2.x"
 	@echo "----------------------------------"
-	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); nosetests --cover-package=safe,safe_qgis --with-id --with-xcoverage --with-xunit --verbose --cover-package=safe,safe_qgis safe safe_qgis || :
+	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); nosetests --cover-package=safe_core,safe_qgis --with-id --with-xcoverage --with-xunit --verbose --cover-package=safe_core,safe_qgis safe_core safe_qgis || :
 
 jenkins-qgis2-test: testdata clean
 	@echo
@@ -351,14 +351,14 @@ jenkins-qgis2-test: testdata clean
 	@echo "Regression Test Suite for Jenkins"
 	@echo " against QGIS 2.x"
 	@echo "----------------------------------"
-	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); nosetests -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=safe,safe_qgis,realtime safe safe_qgis realtime || :
+	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); nosetests -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=safe_core,safe_qgis,realtime safe_core safe_qgis realtime || :
 
 jenkins-pyflakes:
 	@echo
 	@echo "----------------------------------"
 	@echo "PyFlakes check for Jenkins"
 	@echo "----------------------------------"
-	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); pyflakes safe safe_qgis realtime > pyflakes.log || :
+	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); pyflakes safe_core safe_qgis realtime > pyflakes.log || :
 
 jenkins-sloccount:
 	@echo "----------------------"
@@ -366,7 +366,7 @@ jenkins-sloccount:
 	@echo " Generated using David A. Wheeler's 'SLOCCount'"
 	@echo "----------------------"
 	# This line is for machine readable output for use by Jenkins
-	@sloccount --duplicates --wide --details  safe_api.py safe safe_qgis realtime | fgrep -v .svn > sloccount.sc || :
+	@sloccount --duplicates --wide --details  safe_api.py safe_core safe_qgis realtime | fgrep -v .svn > sloccount.sc || :
 
 jenkins-pylint:
 	@echo
@@ -379,7 +379,7 @@ jenkins-pylint:
 	@echo " with 'F0401' being the warning code."
 	@echo "----------------------------------"
 	rm -f pylint.log
-	@-export PYTHONPATH=$(PYTHONPATH):`pwd`/safe_extras; pylint --output-format=parseable --reports=y --rcfile=pylintrc_jenkins safe safe_qgis realtime> pylint.log || :
+	@-export PYTHONPATH=$(PYTHONPATH):`pwd`/safe_extras; pylint --output-format=parseable --reports=y --rcfile=pylintrc_jenkins safe_core safe_qgis realtime> pylint.log || :
 
 jenkins-pep8:
 	@echo

@@ -22,7 +22,7 @@ import unittest
 import os
 import shutil
 
-from safe.api import temp_dir, get_shake_test_data_path
+from safe_core.api import temp_dir, get_shake_test_data_path
 from realtime.sftp_client import SFtpClient
 from realtime.sftp_configuration.configuration import (
     get_sftp_base_url,

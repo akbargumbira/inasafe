@@ -29,7 +29,7 @@ from PyQt4.QtCore import Qt, QPoint
 from PyQt4 import QtGui
 from PyQt4.QtTest import QTest
 from qgis.core import QgsRectangle, QgsCoordinateReferenceSystem
-from safe.common.testing import get_qgis_app
+from safe_core.common.testing import get_qgis_app
 # In our tests, we need to have this line below before importing any other
 # safe_qgis.__init__ to load all the configurations that we make for testing
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()

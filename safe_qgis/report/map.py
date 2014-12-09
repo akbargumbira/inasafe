@@ -240,7 +240,7 @@ class Map():
             'impact-title': title,
             'date': date,
             'time': time,
-            'safe-version': version,
+            'safe_core-version': version,
             'disclaimer': self.disclaimer
         }
         LOGGER.debug(substitution_map)
@@ -255,7 +255,7 @@ class Map():
         self.page_height = self.composition.paperHeight()
 
         # set InaSAFE logo
-        image = self.composition.getComposerItemById('safe-logo')
+        image = self.composition.getComposerItemById('safe_core-logo')
         if image is not None:
             image.setPictureFile(self.safe_logo)
 

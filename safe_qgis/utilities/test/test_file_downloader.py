@@ -22,7 +22,7 @@ import tempfile
 # noinspection PyPackageRequirements
 from PyQt4.QtNetwork import QNetworkAccessManager
 
-from safe.common.testing import get_qgis_app
+from safe_core.common.testing import get_qgis_app
 # In our tests, we need to have this line below before importing any other
 # safe_qgis.__init__ to load all the configurations that we make for testing
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()

@@ -23,13 +23,13 @@ sys.path.append(pardir)
 
 from PyQt4.QtGui import QWidget
 
-from safe.common.testing import get_qgis_app
+from safe_core.common.testing import get_qgis_app
 # In our tests, we need to have this line below before importing any other
 # safe_qgis.__init__ to load all the configurations that we make for testing
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 
 from qgis.gui import QgsMapCanvas
-from safe.common.qgis_interface import QgisInterface
+from safe_core.common.qgis_interface import QgisInterface
 from safe_qgis.plugin import Plugin
 from safe_qgis.safe_interface import safeTr
 
@@ -83,7 +83,7 @@ class PluginTest(unittest.TestCase):
         # (see http://effbot.org/zone/metaclass-plugins.htm)
         # lang in the context of the ugettext function in inasafe libs
         # must be imported late so that i18n is set up already
-        from safe.common.utilities import ugettext as tr
+        from safe_core.common.utilities import ugettext as tr
         myUntranslatedString = 'Temporarily Closed'
         myExpectedString = 'Tydelik gesluit'  # afrikaans
         myTranslation = tr(myUntranslatedString)

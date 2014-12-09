@@ -32,13 +32,13 @@ import difflib
 from qgis.core import QgsFeatureRequest
 # pylint: enable=E0611
 # pylint: enable=W0611
-from safe.api import (
+from safe_core.api import (
     unique_filename,
     temp_dir,
     get_version,
     get_shake_test_data_path
 )
-from safe.common.testing import get_qgis_app
+from safe_core.common.testing import get_qgis_app
 from realtime.utilities import (
     shakemap_extract_dir,
     data_dir,

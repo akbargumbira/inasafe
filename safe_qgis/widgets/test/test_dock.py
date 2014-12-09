@@ -35,7 +35,7 @@ from unittest import TestCase, skipIf
 # noinspection PyPackageRequirements
 from PyQt4 import QtCore
 
-from safe.common.testing import TESTDATA, BOUNDDATA, get_qgis_app
+from safe_core.common.testing import TESTDATA, BOUNDDATA, get_qgis_app
 # In our tests, we need to have this line below before importing any other
 # safe_qgis.__init__ to load all the configurations that we make for testing
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
@@ -84,17 +84,17 @@ from safe_qgis.utilities.utilities import qgis_version, read_impact_layer
 # So ignore unused import errors for these? (Tim)
 # pylint: disable=W0611
 # noinspection PyUnresolvedReferences
-from safe.engine.impact_functions_for_testing import allen_fatality_model
+from safe_core.engine.impact_functions_for_testing import allen_fatality_model
 # noinspection PyUnresolvedReferences
-from safe.engine.impact_functions_for_testing import HKV_flood_study
+from safe_core.engine.impact_functions_for_testing import HKV_flood_study
 # noinspection PyUnresolvedReferences
-from safe.engine.impact_functions_for_testing import BNPB_earthquake_guidelines
+from safe_core.engine.impact_functions_for_testing import BNPB_earthquake_guidelines
 # noinspection PyUnresolvedReferences
-from safe.engine.impact_functions_for_testing import \
+from safe_core.engine.impact_functions_for_testing import \
     categorised_hazard_building_impact
 # pylint: enable=W0611
 # noinspection PyUnresolvedReferences
-from safe.impact_functions.core import get_plugin
+from safe_core.impact_functions.core import get_plugin
 
 LOGGER = logging.getLogger('InaSAFE')
 DOCK = Dock(IFACE)

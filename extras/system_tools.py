@@ -43,7 +43,7 @@ def get_host_name():
 
 
 def safe_crc(string):
-    """64 bit safe crc computation.
+    """64 bit safe_core crc computation.
 
     See http://docs.python.org/library/zlib.html#zlib.crc32:
 

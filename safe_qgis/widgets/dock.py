@@ -1536,7 +1536,7 @@ class Dock(QtGui.QDockWidget, Ui_DockBase):
         # AG: This is a quick fix to adapt with QGIS >= 2.4
         # https://github.com/AIFDR/inasafe/issues/911
         # We'll need to refactor report modules
-        component_ids = ['safe-logo', 'north-arrow', 'organisation-logo',
+        component_ids = ['safe_core-logo', 'north-arrow', 'organisation-logo',
                          'impact-map', 'impact-legend']
         missing_elements = []
         template_file = QtCore.QFile(template_path)

@@ -17,12 +17,12 @@ sys.path.append(pardir)
 
 # For testing and demoing
 
-from safe.common.testing import get_qgis_app
+from safe_core.common.testing import get_qgis_app
 # In our tests, we need to have this line below before importing any other
 # safe_qgis.__init__ to load all the configurations that we make for testing
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 
-from safe.common.utilities import unique_filename
+from safe_core.common.utilities import unique_filename
 from safe_qgis.safe_interface import read_file_keywords
 from safe_qgis.utilities.utilities_for_testing import load_layer
 from safe_qgis.utilities.keyword_io import KeywordIO

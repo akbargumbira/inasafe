@@ -77,16 +77,16 @@ if os.path.exists(translation_path):
     # noinspection PyTypeChecker,PyCallByClass
     QCoreApplication.installTranslator(translator)
 
-# MONKEYPATCHING safe.defaults.get_defaults to use get_defaults
+# MONKEYPATCHING safe_core.defaults.get_defaults to use get_defaults
 # see safe_qgis.utilities.defaults for more details
 try:
-    import safe.defaults
+    import safe_core.defaults
     from safe_qgis.utilities.defaults import get_defaults
 
-    safe.defaults.get_defaults = lambda the_default=None: get_defaults(
+    safe_core.defaults.get_defaults = lambda the_default=None: get_defaults(
         the_default)
 
-    from safe.impact_functions.core import get_plugins
+    from safe_core.impact_functions.core import get_plugins
     from safe_qgis.tools.minimum_needs.needs_profile import NeedsProfile
     # Monkey patch all the impact functions
     minimum_needs = NeedsProfile()
@@ -111,7 +111,7 @@ except ImportError:
 
     trace = ''.join(traceback.format_tb(sys.exc_info()[2]))
     # Note that we do a late import here to avoid QPaintDevice before
-    # QApplication errors when running tests of safe package. TS
+    # QApplication errors when running tests of safe_core package. TS
     from PyQt4.QtCore import QCoreApplication
     from PyQt4.QtGui import QMessageBox
     myWarning = QCoreApplication.translate(

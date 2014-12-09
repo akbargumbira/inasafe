@@ -36,7 +36,7 @@ class Serializer(object):
 
     def serialize(self, value):
         """
-        Given ``value``, coerce into a JSON-safe type.
+        Given ``value``, coerce into a JSON-safe_core type.
         """
         return value
 

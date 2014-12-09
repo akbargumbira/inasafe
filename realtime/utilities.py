@@ -23,7 +23,7 @@ from datetime import datetime
 import ntpath
 
 
-from safe.api import setup_logger as setup_logger_safe
+from safe_core.api import setup_logger as setup_logger_safe
 
 
 def base_data_dir():

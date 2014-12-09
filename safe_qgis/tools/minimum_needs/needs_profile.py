@@ -21,7 +21,7 @@ from PyQt4.QtCore import QSettings
 from qgis.core import QgsApplication
 
 from safe_extras.parameters.resource_parameter import ResourceParameter
-from safe.common.minimum_needs import MinimumNeeds
+from safe_core.common.minimum_needs import MinimumNeeds
 
 
 class NeedsProfile(MinimumNeeds):
@@ -85,7 +85,7 @@ class NeedsProfile(MinimumNeeds):
         # sequence
         if not self.minimum_needs['resources']:
             return
-        from safe.impact_functions.core import get_plugins
+        from safe_core.impact_functions.core import get_plugins
         self.settings.setValue('MinimumNeeds', self.minimum_needs)
         # Monkey patch all the impact functions
         for (_, plugin) in get_plugins().items():

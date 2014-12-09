@@ -36,7 +36,7 @@ from raven.handlers.logging import SentryHandler
 from raven import Client
 # pylint: enable=F0401
 
-from safe.api import add_logging_handler_once
+from safe_core.api import add_logging_handler_once
 from safe_qgis.utilities.utilities import tr
 
 LOGGER = logging.getLogger('InaSAFE')
@@ -82,13 +82,13 @@ def setup_logger(sentry_url=None):
     Borrowed heavily from this:
     http://docs.python.org/howto/logging-cookbook.html
 
-    Use this to first initialise the logger (see safe/__init__.py)::
+    Use this to first initialise the logger (see safe_core/__init__.py)::
 
        from safe_qgis import utilities
        utilities.setupLogger()
 
     You would typically only need to do the above once ever as the
-    safe model is initialised early and will set up the logger
+    safe_core model is initialised early and will set up the logger
     globally so it is available to all packages / subpackages as
     shown below.
 
@@ -139,6 +139,6 @@ def setup_logger(sentry_url=None):
         if add_logging_handler_once(logger, sentry_handler):
             logger.debug('Sentry logging enabled in safe_qgis')
         elif 'INASAFE_SENTRY' in os.environ:
-            logger.debug('Sentry logging already enabled in safe')
+            logger.debug('Sentry logging already enabled in safe_core')
     else:
         logger.debug('Sentry logging disabled in safe_qgis')

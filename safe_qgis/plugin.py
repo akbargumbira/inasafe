@@ -450,7 +450,7 @@ class Plugin:
     def clear_modules(self):
         """Unload inasafe functions and try to return QGIS to before InaSAFE.
         """
-        from safe.impact_functions import core
+        from safe_core.impact_functions import core
 
         core.unload_plugins()
         # next lets force remove any inasafe related modules

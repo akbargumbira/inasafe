@@ -1,11 +1,11 @@
 import numpy
-from safe.impact_functions.core import FunctionProvider
-from safe.impact_functions.core import get_hazard_layer, get_exposure_layer
-from safe.impact_functions.core import get_question, get_function_title
-from safe.impact_functions.styles import flood_population_style as style_info
-from safe.storage.raster import Raster
-from safe.common.utilities import ugettext as tr
-from safe.common.tables import Table, TableRow
+from safe_core.impact_functions.core import FunctionProvider
+from safe_core.impact_functions.core import get_hazard_layer, get_exposure_layer
+from safe_core.impact_functions.core import get_question, get_function_title
+from safe_core.impact_functions.styles import flood_population_style as style_info
+from safe_core.storage.raster import Raster
+from safe_core.common.utilities import ugettext as tr
+from safe_core.common.tables import Table, TableRow
 
 
 class WBFloodEvacuationFunction(FunctionProvider):

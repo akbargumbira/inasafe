@@ -15,7 +15,7 @@
 LOCALES=`ls docs/i18n`
 
 #
-# Now safe package
+# Now safe_core package
 #
 POFILE='safe/i18n/en/LC_MESSAGES/inasafe.po'
 RESOURCE='safe/i18n/<lang>/LC_MESSAGES/inasafe.po'

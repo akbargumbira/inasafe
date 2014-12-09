@@ -1,7 +1,7 @@
-from safe.impact_functions.core import FunctionProvider
-from safe.impact_functions.core import get_hazard_layer, get_exposure_layer
-from safe.storage.vector import Vector
-from safe.common.utilities import ugettext as _
+from safe_core.impact_functions.core import FunctionProvider
+from safe_core.impact_functions.core import get_hazard_layer, get_exposure_layer
+from safe_core.storage.vector import Vector
+from safe_core.common.utilities import ugettext as _
 
 
 class BNPBFloodBuildingImpactFunction(FunctionProvider):

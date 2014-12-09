@@ -343,7 +343,7 @@ class JSONEncoder(object):
 
 
 class JSONEncoderForHTML(JSONEncoder):
-    """An encoder that produces JSON safe to embed in HTML.
+    """An encoder that produces JSON safe_core to embed in HTML.
 
     To embed JSON content in, say, a script tag on a web page, the
     characters &, < and > should be escaped. They cannot be escaped

@@ -30,8 +30,8 @@ from PyQt4.QtCore import pyqtSignature
 # noinspection PyPackageRequirements
 from PyQt4.QtGui import QListWidgetItem, QPixmap, QApplication
 
-from safe.api import ImpactFunctionManager
-from safe.api import metadata  # pylint: disable=W0612
+from safe_core.api import ImpactFunctionManager
+from safe_core.api import metadata  # pylint: disable=W0612
 
 from safe_qgis.safe_interface import InaSAFEError, DEFAULTS
 from safe_qgis.ui.wizard_dialog_base import Ui_WizardDialogBase

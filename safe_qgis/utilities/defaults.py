@@ -20,19 +20,19 @@ __copyright__ += 'Disaster Reduction'
 # noinspection PyPackageRequirements
 from PyQt4 import QtCore
 
-# This call needs to be made directly to safe.defaults and not over
-# safe_interface since safe_interface calls safe.api which calls
-# safe.impact_functions.core
-# calling safe.impact_functions.core calls safe.impact_functions.__init__
-# which will load the function using the safe.defaults instead of the monkey
+# This call needs to be made directly to safe_core.defaults and not over
+# safe_interface since safe_interface calls safe_core.api which calls
+# safe_core.impact_functions.core
+# calling safe_core.impact_functions.core calls safe_core.impact_functions.__init__
+# which will load the function using the safe_core.defaults instead of the monkey
 # patched safe_qgis.defaults (see safe_qgis.__init__)
-from safe.defaults import DEFAULTS
+from safe_core.defaults import DEFAULTS
 
 
 def get_defaults(default=None):
     """Get a dictionary of default values to be used for post processing.
 
-    .. note: This method takes the DEFAULTS from safe and modifies them
+    .. note: This method takes the DEFAULTS from safe_core and modifies them
         according to user preferences defined in QSettings.
 
     :param default: A key of the defaults dictionary. Use this to
@@ -91,9 +91,9 @@ def get_defaults(default=None):
 
 
 def _get_updated_default(default, default_type):
-    """get a default from qsettings falling back to the default value in safe
+    """get a default from qsettings falling back to the default value in safe_core
 
-    :param default: the key of the default in safe/defaults.py DEFAULTS
+    :param default: the key of the default in safe_core/defaults.py DEFAULTS
     :param default_type: the type of the the default
     :return: typed default value
     """
@@ -109,7 +109,7 @@ def disclaimer():
     :returns: Standard disclaimer string for InaSAFE.
     :rtype: str
     """
-    # import tr here to avoid side effects with safe (see notes above in import
+    # import tr here to avoid side effects with safe_core (see notes above in import
     # section.
     from safe_qgis.utilities.utilities import tr
     text = tr(
@@ -148,7 +148,7 @@ def limitations():
     :return: All limitations on current InaSAFE.
     :rtype: list
     """
-    # import tr here to avoid side effects with safe (see notes above in import
+    # import tr here to avoid side effects with safe_core (see notes above in import
     # section.
     from safe_qgis.utilities.utilities import tr
     limitation_list = list()

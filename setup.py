@@ -6,7 +6,7 @@ import sys
 from distutils.core import setup
 from distutils.command.install import INSTALL_SCHEMES
 
-safe = __import__('safe')
+safe = __import__('safe_core')
 
 
 def fullsplit(path, result=None):
@@ -34,7 +34,7 @@ packages, data_files = [], []
 root_dir = os.path.dirname(__file__)
 if root_dir != '':
     os.chdir(root_dir)
-safe_dir = 'safe'
+safe_dir = 'safe_core'
 
 for dirpath, dirnames, filenames in os.walk(safe_dir):
     # Ignore dirnames that start with '.'
@@ -51,7 +51,7 @@ for dirpath, dirnames, filenames in os.walk(safe_dir):
 # csv's in the plugins folder. While I do not think that's a good idea, let's
 # work around it in a very specific way.
 csv_files = ['itb_vulnerability_non_eng.csv', 'itb_vulnerability_eng.csv']
-csv_dir = os.path.join('safe', 'impact_functions', 'earthquake')
+csv_dir = os.path.join('safe_core', 'impact_functions', 'earthquake')
 data_files.append([csv_dir, [os.path.join(csv_dir, f) for f in csv_files]])
 
 
@@ -59,7 +59,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
-setup(name='python-safe',
+setup(name='python-safe_core',
       version=safe.__full_version__,
       description='Spatial Analysis Functional Engine',
       license='GPL',

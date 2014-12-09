@@ -23,7 +23,7 @@ from qgis.core import (
     QgsMapLayerRegistry)
 
 # For testing and demoing
-from safe.common.testing import get_qgis_app
+from safe_core.common.testing import get_qgis_app
 # In our tests, we need to have this line below before importing any other
 # safe_qgis.__init__ to load all the configurations that we make for testing
 QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
@@ -733,7 +733,7 @@ def setup_scenario(
             aggregation should be enabled when the scenario is loaded.
     :type aggregation_enabled_flag: bool
 
-    We require both function and function_id because safe allows for
+    We require both function and function_id because safe_core allows for
     multiple functions with the same name but different id's so we need to be
     sure we have the right one.
 

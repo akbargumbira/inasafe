@@ -23,8 +23,8 @@ import shutil
 
 import ogr
 
-from safe.common.utilities import unique_filename, temp_dir
-from safe.common.testing import (
+from safe_core.common.utilities import unique_filename, temp_dir
+from safe_core.common.testing import (
     get_qgis_app,
     get_shake_test_data_path)
 # In our tests, we need to have this line below before importing any other

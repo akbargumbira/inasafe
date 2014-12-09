@@ -1,5 +1,5 @@
-from safe.engine.utilities import buffer_points
-from safe.storage.core import read_layer
+from safe_core.engine.utilities import buffer_points
+from safe_core.storage.core import read_layer
 
 H = read_layer('/data_area/InaSAFE/public_data/hazard/Marapi.shp')
 print H.get_geometry()
