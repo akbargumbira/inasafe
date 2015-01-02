@@ -26,7 +26,7 @@ from safe.impact_functions.core import (
     get_plugins_as_table)
 from safe.utilities.resources import html_header, html_footer, get_ui_class
 
-FORM_CLASS = get_ui_class('function_browser_base.ui')
+FORM_CLASS = get_ui_class('function_browser_dialog_base.ui')
 
 
 class FunctionBrowser(QtGui.QDialog, FORM_CLASS):
@@ -79,28 +79,28 @@ class FunctionBrowser(QtGui.QDialog, FORM_CLASS):
         self.combo_box_content = None  # for storing combo box content
         self.populate_combo_box()
         # Hey we should be using autoconnect here TS
-        reset_button = self.myButtonBox.button(QtGui.QDialogButtonBox.Reset)
+        reset_button = self.button_box.button(QtGui.QDialogButtonBox.Reset)
         reset_button.clicked.connect(self.reset_button_clicked)
 
         # and autoconenct here too! TS
-        help_button = self.myButtonBox.button(QtGui.QDialogButtonBox.Help)
+        help_button = self.button_box.button(QtGui.QDialogButtonBox.Help)
         help_button.clicked.connect(self.show_help)
 
         # Combo box change event ... and all of these! TS
-        self.comboBox_id.currentIndexChanged.connect(self.update_table)
-        self.comboBox_title.currentIndexChanged.connect(self.update_table)
-        self.comboBox_category.currentIndexChanged.connect(self.update_table)
-        self.comboBox_subcategory.currentIndexChanged.connect(
+        self.combo_box_id.currentIndexChanged.connect(self.update_table)
+        self.combo_box_title.currentIndexChanged.connect(self.update_table)
+        self.combo_box_category.currentIndexChanged.connect(self.update_table)
+        self.combo_box_subcategory.currentIndexChanged.connect(
             self.update_table)
-        self.comboBox_layertype.currentIndexChanged.connect(self.update_table)
-        self.comboBox_datatype.currentIndexChanged.connect(self.update_table)
-        self.comboBox_unit.currentIndexChanged.connect(self.update_table)
+        self.combo_box_layertype.currentIndexChanged.connect(self.update_table)
+        self.combo_box_datatype.currentIndexChanged.connect(self.update_table)
+        self.combo_box_unit.currentIndexChanged.connect(self.update_table)
 
     def show_table(self):
         """Show table of impact functions.
         """
         self.table = get_plugins_as_table(self.dict_filter)
-        self.webView.settings().setAttribute(
+        self.web_view.settings().setAttribute(
             QtWebKit.QWebSettings.DeveloperExtrasEnabled, True)
         self.display_html(str(self.table))
 
@@ -117,30 +117,30 @@ class FunctionBrowser(QtGui.QDialog, FORM_CLASS):
         if self.combo_box_content is None:
             self.combo_box_content = self.generate_combo_box_content()
 
-        self.comboBox_title.addItems(self.combo_box_content['title'])
-        self.comboBox_id.addItems(self.combo_box_content['id'])
-        self.comboBox_category.addItems(self.combo_box_content['category'])
-        self.comboBox_subcategory.addItems(
+        self.combo_box_title.addItems(self.combo_box_content['title'])
+        self.combo_box_id.addItems(self.combo_box_content['id'])
+        self.combo_box_category.addItems(self.combo_box_content['category'])
+        self.combo_box_subcategory.addItems(
             self.combo_box_content['subcategory'])
-        self.comboBox_layertype.addItems(
+        self.combo_box_layertype.addItems(
             self.combo_box_content['layertype'])
-        self.comboBox_datatype.addItems(self.combo_box_content['datatype'])
-        self.comboBox_unit.addItems(self.combo_box_content['unit'])
+        self.combo_box_datatype.addItems(self.combo_box_content['datatype'])
+        self.combo_box_unit.addItems(self.combo_box_content['unit'])
 
     def update_table(self):
         """Updating table according to the filter."""
         # get filter
-        self.dict_filter['title'] = [str(self.comboBox_title.currentText())]
-        self.dict_filter['id'] = [str(self.comboBox_id.currentText())]
+        self.dict_filter['title'] = [str(self.combo_box_title.currentText())]
+        self.dict_filter['id'] = [str(self.combo_box_id.currentText())]
         self.dict_filter['category'] = \
-            ([str(self.comboBox_category.currentText())])
+            ([str(self.combo_box_category.currentText())])
         self.dict_filter['subcategory'] = \
-            ([str(self.comboBox_subcategory.currentText())])
+            ([str(self.combo_box_subcategory.currentText())])
         self.dict_filter['layertype'] = \
-            ([str(self.comboBox_layertype.currentText())])
+            ([str(self.combo_box_layertype.currentText())])
         self.dict_filter['datatype'] = \
-            ([str(self.comboBox_datatype.currentText())])
-        self.dict_filter['unit'] = [str(self.comboBox_unit.currentText())]
+            ([str(self.combo_box_datatype.currentText())])
+        self.dict_filter['unit'] = [str(self.combo_box_unit.currentText())]
         for key, value in self.dict_filter.iteritems():
             for val in value:
                 if str(val) == self.no_filter:
@@ -154,13 +154,13 @@ class FunctionBrowser(QtGui.QDialog, FORM_CLASS):
 
         All combo box become No Filter. Updating table according to the filter.
         """
-        self.comboBox_title.setCurrentIndex(0)
-        self.comboBox_id.setCurrentIndex(0)
-        self.comboBox_category.setCurrentIndex(0)
-        self.comboBox_subcategory.setCurrentIndex(0)
-        self.comboBox_layertype.setCurrentIndex(0)
-        self.comboBox_datatype.setCurrentIndex(0)
-        self.comboBox_unit.setCurrentIndex(0)
+        self.combo_box_title.setCurrentIndex(0)
+        self.combo_box_id.setCurrentIndex(0)
+        self.combo_box_category.setCurrentIndex(0)
+        self.combo_box_subcategory.setCurrentIndex(0)
+        self.combo_box_layertype.setCurrentIndex(0)
+        self.combo_box_datatype.setCurrentIndex(0)
+        self.combo_box_unit.setCurrentIndex(0)
 
         self.update_table()
 
@@ -179,4 +179,4 @@ class FunctionBrowser(QtGui.QDialog, FORM_CLASS):
         :type message: str or QString
         """
         html = html_header() + message + html_footer()
-        self.webView.setHtml(html)
+        self.web_view.setHtml(html)
