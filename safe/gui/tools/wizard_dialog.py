@@ -31,12 +31,14 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import pyqtSignature, QSettings
 # noinspection PyPackageRequirements
 from PyQt4.QtGui import (
+    qApp,
     QDialog,
     QListWidgetItem,
     QPixmap,
     QApplication,
     QDesktopWidget,
-    QSortFilterProxyModel)
+    QSortFilterProxyModel,
+    QStyle)
 
 from qgis.core import (
     QgsCoordinateTransform,
@@ -388,7 +390,13 @@ class WizardDialog(QDialog, FORM_CLASS):
         """
         QDialog.__init__(self, parent)
         self.setupUi(self)
-        self.fix_window_geometry()
+        # self.fix_window_geometry()
+        self.setGeometry(
+            QStyle.alignedRect(
+            QtCore.Qt.LeftToRight,
+            QtCore.Qt.AlignCenter,
+            self.size(),
+            qApp.desktop().availableGeometry()))
         self.setWindowTitle('InaSAFE')
         # Note the keys should remain untranslated as we need to write
         # english to the keywords file.
