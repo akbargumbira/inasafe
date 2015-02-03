@@ -390,13 +390,10 @@ class WizardDialog(QDialog, FORM_CLASS):
         """
         QDialog.__init__(self, parent)
         self.setupUi(self)
-        # self.fix_window_geometry()
-        self.setGeometry(
-            QStyle.alignedRect(
-            QtCore.Qt.LeftToRight,
-            QtCore.Qt.AlignCenter,
-            self.size(),
-            qApp.desktop().availableGeometry()))
+        self.fix_window_geometry()
+        screen = QDesktopWidget().screenGeometry()
+        self.move(screen.center() - self.rect().center())
+
         self.setWindowTitle('InaSAFE')
         # Note the keys should remain untranslated as we need to write
         # english to the keywords file.
@@ -513,6 +510,13 @@ class WizardDialog(QDialog, FORM_CLASS):
             y = y_max - h
         if (x, y, x + w, y + h) != self.geometry().getCoords():
             self.setGeometry(x, y, w, h)
+        size = QtCore.QSize(w, h)
+        self.setGeometry(
+            QStyle.alignedRect(
+                QtCore.Qt.LeftToRight,
+                QtCore.Qt.AlignCenter,
+                size,
+                qApp.desktop().availableGeometry()))
 
     def set_keywords_creation_mode(self, layer=None):
         """Set the Wizard to the Keywords Creation mode
