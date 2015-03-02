@@ -18,7 +18,8 @@ from safe.definitions import (
     hazard_definition
 )
 from safe.common.utilities import OrderedDict
-from safe.impact_functions.core import get_hazard_layer, get_exposure_layer, FunctionProvider
+from safe.impact_functions.core import FunctionProvider
+from safe.impact_functions.core import get_hazard_layer, get_exposure_layer
 from safe.impact_functions.core import get_question
 from safe.common.tables import Table, TableRow
 from safe.impact_functions.inundation.metadata.\
