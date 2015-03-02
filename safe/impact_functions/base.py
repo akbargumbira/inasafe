@@ -1,7 +1,7 @@
 # coding=utf-8
 """Abstract base class for all impact functions."""
 
-from safe.metadata.base import MetadataBase
+from safe.impact_functions.metadata.base import MetadataBase
 from safe.utilities.i18n import tr
 from errors import InvalidExtentError
 

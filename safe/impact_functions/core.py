@@ -14,6 +14,7 @@ from collections import OrderedDict
 import keyword as python_keywords
 
 from safe.gis.polygon import inside_polygon
+from safe.impact_functions.base import ImpactFunction
 from safe.utilities.i18n import tr
 from safe.defaults import default_minimum_needs
 from utilities import (
@@ -54,7 +55,7 @@ class PluginMount(type):
 # pylint: enable=W0613,C0203
 
 
-class FunctionProvider(object):
+class FunctionProvider(ImpactFunction):
     """Mount point for impact_functions.
 
     Plugins implementing this reference should provide the following method:
@@ -262,6 +263,7 @@ def function_name(impact_function):
     :returns: The name of the impact function.
     :rtype: str
     """
+
     # noinspection PyUnresolvedReferences
     return impact_function.Metadata.get_metadata()['name']
 

@@ -12,6 +12,7 @@ Contact : ole.moller.nielsen@gmail.com
 """
 
 import logging
+import pydevd
 
 from safe.definitions import (
     hazard_flood,
@@ -30,6 +31,8 @@ from safe.definitions import (
 from safe.common.utilities import OrderedDict, get_osm_building_usage
 from safe.impact_functions.core import (
     FunctionProvider, get_hazard_layer, get_exposure_layer, get_question)
+from safe.impact_functions.errors import GetDataError
+from safe.impact_functions.inundation.metadata.flood_OSM_building_impact_metadata import FloodBuildingImpactMetadata
 from safe.storage.vector import Vector
 from safe.storage.utilities import DEFAULT_ATTRIBUTE
 from safe.utilities.i18n import tr
@@ -58,6 +61,15 @@ class FloodBuildingImpactFunction(FunctionProvider):
                     layertype=='vector'
     """
 
+    _metadata = FloodBuildingImpactMetadata
+
+    def __init__(self):
+        """Constructor (calls ctor of base class)."""
+        super(FloodBuildingImpactFunction, self).__init__()
+
+        self.hazard_provider = None
+        self.affected_field_index = -1
+
     class Metadata(ImpactFunctionMetadata):
         """Metadata for Flood Building Impact Function.
 
@@ -78,46 +90,7 @@ class FloodBuildingImpactFunction(FunctionProvider):
                 concrete impact function.
             :rtype: dict
             """
-            dict_meta = {
-                'id': 'FloodBuildingImpactFunction',
-                'name': tr('Flood Building Impact Function'),
-                'impact': tr('Be flooded'),
-                'author': ['Ole Nielsen', 'Kristy van Putten'],
-                'date_implemented': 'N/A',
-                'overview': tr(
-                    'To assess the impacts of (flood or tsunami) inundation '
-                    'on building footprints originating from OpenStreetMap '
-                    '(OSM).'),
-                'categories': {
-                    'hazard': {
-                        'definition': hazard_definition,
-                        'subcategories': [
-                            hazard_flood,
-                            hazard_tsunami
-                        ],
-                        'units': [
-                            unit_wetdry,
-                            unit_metres_depth,
-                            unit_feet_depth],
-                        'layer_constraints': [
-                            layer_vector_polygon,
-                            layer_raster_continuous,
-                        ]
-                    },
-                    'exposure': {
-                        'definition': exposure_definition,
-                        'subcategories': [exposure_structure],
-                        'units': [
-                            unit_building_type_type,
-                            unit_building_generic],
-                        'layer_constraints': [
-                            layer_vector_polygon,
-                            layer_vector_point
-                        ]
-                    }
-                }
-            }
-            return dict_meta
+            return FloodBuildingImpactFunction._metadata.as_dict()
 
     # Function documentation
     target_field = 'INUNDATED'
@@ -173,6 +146,9 @@ class FloodBuildingImpactFunction(FunctionProvider):
                 * exposure_layer: Vector layer of structure data on
                 the same grid as hazard_layer
         """
+        # FIXME: need to set extent in base prepare
+        # self.prepare()
+
         threshold = self.parameters['threshold [m]']  # Flood threshold [m]
 
         verify(isinstance(threshold, float),
@@ -360,6 +336,64 @@ class FloodBuildingImpactFunction(FunctionProvider):
                     del buildings[usage]
                     del affected_buildings[usage]
 
+        # Result
+        self._tabulate(mode, question, inundated_count, wet_count, dry_count, total_features,
+                       affected_count, attribute_names, buildings, inundated_buildings,
+                       wet_buildings, dry_buildings, affected_buildings, threshold)
+        impact_summary = Table(self._tabulated_impact).toNewlineFreeString()
+        impact_table = impact_summary
+
+        # Prepare impact layer
+        map_title = tr('Buildings inundated')
+        legend_title = tr('Structure inundated status')
+        legend_units = ''
+
+        self._style(mode, threshold)
+
+        # Create vector layer and return
+        vector_layer = Vector(
+            data=features,
+            projection=interpolated_layer.get_projection(),
+            geometry=interpolated_layer.get_geometry(),
+            name=tr('Estimated buildings affected'),
+            keywords={
+                'impact_summary': impact_summary,
+                'impact_table': impact_table,
+                'target_field': self.target_field,
+                'map_title': map_title,
+                'legend_units': self.legend_units,
+                'legend_title': legend_title,
+                'buildings_total': total_features,
+                'buildings_affected': affected_count},
+            style_info=self.style_info)
+        return vector_layer
+
+    def prepare(self):
+        """Prepare this impact function for running the analysis.
+
+        .. seealso:: impact_functions.base.prepare_for_run()
+
+        Calls the prepare_for_run method of the impact function base class and
+        then implements any specfic checks needed by this impact function.
+
+        :raises: GetDataError
+        """
+        super(FloodBuildingImpactFunction, self).prepare()
+
+        affected_field = self.parameters()['affected_field']
+        self.hazard_provider = self.hazard.dataProvider()
+        self.affected_field_index = self.hazard_provider.fieldNameIndex(
+            affected_field)
+        if self.affected_field_index == -1:
+            message = tr('''Parameter "Affected Field"(='%s')
+                is not present in the
+                attribute table of the hazard layer.''' % (affected_field, ))
+            raise GetDataError(message)
+
+    def _tabulate(self, mode, question, inundated_count, wet_count, dry_count, total_features,
+                  affected_count, attribute_names, buildings, inundated_buildings, wet_buildings,
+                  dry_buildings, affected_buildings, threshold):
+        """Helper to perform tabulation."""
         # Generate simple impact report
         table_body = []
         if mode == 'grid':
@@ -484,15 +518,10 @@ class FloodBuildingImpactFunction(FunctionProvider):
             table_body.append(TableRow(
                 tr('Buildings are said to be flooded when in regions marked '
                    'as affected')))
+        self._tabulated_impact = table_body
 
-        # Result
-        impact_summary = Table(table_body).toNewlineFreeString()
-        impact_table = impact_summary
-
-        # Prepare impact layer
-        map_title = tr('Buildings inundated')
-        legend_title = tr('Structure inundated status')
-        legend_units = ''
+    def _style(self, mode, threshold):
+        """Helper to create style."""
         style_classes = []
 
         if mode == 'grid':
@@ -537,21 +566,5 @@ class FloodBuildingImpactFunction(FunctionProvider):
         style_info = dict(target_field=self.target_field,
                           style_classes=style_classes,
                           style_type='categorizedSymbol')
-
-        # Create vector layer and return
-        vector_layer = Vector(
-            data=features,
-            projection=interpolated_layer.get_projection(),
-            geometry=interpolated_layer.get_geometry(),
-            name=tr('Estimated buildings affected'),
-            keywords={
-                'impact_summary': impact_summary,
-                'impact_table': impact_table,
-                'target_field': self.target_field,
-                'map_title': map_title,
-                'legend_units': legend_units,
-                'legend_title': legend_title,
-                'buildings_total': total_features,
-                'buildings_affected': affected_count},
-            style_info=style_info)
-        return vector_layer
+        self.style_info = style_info
+        self.legend_units = legend_units
