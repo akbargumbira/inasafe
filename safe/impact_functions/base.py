@@ -3,7 +3,7 @@
 
 from safe.impact_functions.metadata.base import MetadataBase
 from safe.utilities.i18n import tr
-from errors import InvalidExtentError
+from safe.common.exceptions import InvalidExtentError
 
 
 class ImpactFunction(object):
@@ -28,7 +28,9 @@ class ImpactFunction(object):
         self._extent_crs = 4326
         # set this to a gui call back / web callback etc as needed.
         self._callback = self.console_progress_callback
-        self._parameters = None
+        # we need to create new instance of parameters, because
+        # _metadata.parameters() is a static method
+        self._parameters = self._metadata.parameters()
         # Layer representing hazard e.g. flood
         self._hazard = None
         # Layer representing people / infrastructure that are exposed
@@ -149,10 +151,10 @@ class ImpactFunction(object):
         """Get the metadata for this class."""
         return cls._metadata.as_dict()
 
-    @classmethod
-    def parameters(cls):
+    @property
+    def parameters(self):
         """Get the parameter for this class."""
-        return cls._metadata.parameters()
+        return self._parameters
 
     def prepare(self):
         """Prepare this impact function for running the analysis.

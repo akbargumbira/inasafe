@@ -15,7 +15,7 @@ import ctypes
 from numbers import Integral
 import math
 
-from errors import VerificationError
+from safe.common.exceptions import VerificationError
 
 
 # Prefer python's own OrderedDict if it exists

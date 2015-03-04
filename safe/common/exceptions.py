@@ -326,3 +326,8 @@ class InsufficientMemoryWarning(Exception):
 class InvalidAggregationKeywords(Exception):
     """Raised when the aggregation keywords is invalid."""
     pass
+
+
+class InvalidExtentError(Exception):
+    """Raised if an extent if not valid."""
+    pass
