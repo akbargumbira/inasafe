@@ -12,8 +12,6 @@ Contact : ole.moller.nielsen@gmail.com
 .. todo:: Check raster is single band
 
 """
-from safe.impact_functions.registry import Registry
-
 __author__ = 'tim@kartoza.com'
 __revision__ = '$Format:%H$'
 __date__ = '10/01/2011'
@@ -45,7 +43,10 @@ from safe.utilities.utilities import (
     impact_attribution,
     add_ordered_combo_item,
     get_safe_impact_function)
-from safe.defaults import disclaimer
+from safe.defaults import (
+    disclaimer,
+    default_organisation_logo_path,
+    default_north_arrow_path)
 from safe.utilities.gis import (extent_string_to_array, read_impact_layer,
                                 get_geometry_type_string)
 from safe.utilities.resources import (
@@ -96,6 +97,8 @@ from safe.gui.tools.impact_report_dialog import ImpactReportDialog
 from safe_extras.pydispatch import dispatcher
 from safe.utilities.analysis import Analysis
 from safe.utilities.extent import Extent
+from safe.utilities.unicode import get_string, get_unicode
+from safe.impact_functions.registry import Registry
 
 PROGRESS_UPDATE_STYLE = styles.PROGRESS_UPDATE_STYLE
 INFO_STYLE = styles.INFO_STYLE
@@ -312,6 +315,33 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
             message=error_message)
         self.hide_busy()
 
+    def _show_organisation_logo(self):
+        """Show the organisation logo in the dock if possible."""
+        dock_width = float(self.width())
+        # Don't let the image be more tha 100px height
+        maximum_height = 100.0  # px
+        pixmap = QtGui.QPixmap(self.organisation_logo_path)
+        if pixmap.height() < 1 or pixmap.width() < 1:
+            return
+
+        height_ratio = maximum_height / pixmap.height()
+        maximum_width = int(pixmap.width() * height_ratio)
+        # Don't let the image be more than the dock width wide
+        if maximum_width > dock_width:
+            width_ratio = dock_width / float(pixmap.width())
+            maximum_height = int(pixmap.height() * width_ratio)
+            maximum_width = dock_width
+        too_high = pixmap.height() > maximum_height
+        too_wide = pixmap.width() > dock_width
+        if too_wide or too_high:
+            pixmap = pixmap.scaled(
+                maximum_width, maximum_height, Qt.KeepAspectRatio)
+        self.organisation_logo.setMaximumWidth(maximum_width)
+        # We have manually scaled using logic above
+        self.organisation_logo.setScaledContents(False)
+        self.organisation_logo.setPixmap(pixmap)
+        self.organisation_logo.show()
+
     def read_settings(self):
         """Set the dock state from QSettings.
 
@@ -387,26 +417,74 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
             'inasafe/organisation_logo_path',
             default_organisation_logo_path(),
             type=str)
+        # This is a fix for 3.0.0 change where we no longer provide Qt4
+        # Qt4 resource bundles, so if the path points into a resource
+        # bundle we clear it and overwrite the setting
+        invalid_path_flag = False
+        if self.organisation_logo_path.startswith(':/'):
+            self.organisation_logo_path = None
+            invalid_path_flag = True
+            settings.setValue(
+                'inasafe/organisation_logo_path',
+                default_organisation_logo_path())
+
         flag = bool(settings.value(
             'inasafe/showOrganisationLogoInDockFlag', True, type=bool))
 
         if self.organisation_logo_path:
-            dock_width = self.width()
+            dock_width = float(self.width())
+
+            # Dont let the image be more tha 100px hight
             maximum_height = 100.0  # px
             pixmap = QtGui.QPixmap(self.organisation_logo_path)
-            ratio = maximum_height / pixmap.height()
-            maximum_width = pixmap.width() * ratio
+            height_ratio = maximum_height / pixmap.height()
+            maximum_width = int(pixmap.width() * height_ratio)
+
+            # Don't let the image be more than the dock width wide
             if maximum_width > dock_width:
+                width_ratio = dock_width / float(pixmap.width())
+                maximum_height = int(pixmap.height() * width_ratio)
+                maximum_width = dock_width
+
+            too_high = pixmap.height() > maximum_height
+            too_wide = pixmap.width() > dock_width
+
+            if too_wide or too_high:
                 pixmap = pixmap.scaled(
                     maximum_width, maximum_height, Qt.KeepAspectRatio)
 
             self.organisation_logo.setMaximumWidth(maximum_width)
+            # We have manually scaled using logic above
+            self.organisation_logo.setScaledContents(False)
             self.organisation_logo.setPixmap(pixmap)
 
         if self.organisation_logo_path and flag:
-            self.organisation_logo.show()
+            self._show_organisation_logo()
         else:
             self.organisation_logo.hide()
+
+        # This is a fix for 3.0.0 change where we no longer provide Qt4
+        # Qt4 resource bundles, so if the path points into a resource
+        # bundle we clear it and overwrite the setting
+        north_arrow_path = settings.value(
+            'inasafe/north_arrow_path',
+            default_north_arrow_path(),
+            type=str)
+        if north_arrow_path.startswith(':/'):
+            invalid_path_flag = True
+            settings.setValue(
+                'inasafe/north_arrow_path', default_north_arrow_path())
+
+        if invalid_path_flag:
+            QtGui.QMessageBox.warning(
+                self, self.tr('InaSAFE %s' % get_version()),
+                self.tr(
+                    'Due to backwards incompatibility with InaSAFE 2.0.0, the '
+                    'paths to your preferred organisation logo and north '
+                    'arrow may have been reset to their default values. '
+                    'Please check in Plugins -> InaSAFE -> Options that your '
+                    'paths are still correct and update them if needed.'
+                ), QtGui.QMessageBox.Ok)
 
     def connect_layer_listener(self):
         """Establish a signal/slot to listen for layers loaded in QGIS.
@@ -828,7 +906,7 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
             #    store uuid in user property of list widget for layers
 
             name = layer.name()
-            source = str(layer.id())
+            source = layer.id()
             # See if there is a title for this layer, if not,
             # fallback to the layer's filename
 
@@ -1092,7 +1170,6 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
             # Start the analysis
             self.analysis.run_analysis(self.function_parameters)
         except InsufficientOverlapError as e:
-            LOGGER.exception('Error calculating extents. %s' % str(e.message))
             context = self.tr(
                 'A problem was encountered when trying to determine the '
                 'analysis extents.'
@@ -1423,9 +1500,9 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
             if keyword == 'title':
                 value = self.tr(value)
                 # Add this keyword to report
+            value = get_string(value)
             key = m.ImportantText(
                 self.tr(keyword.capitalize()))
-            value = str(value)
             keywords_list.add(m.Text(key, value))
 
         report.add(keywords_list)
@@ -1442,19 +1519,18 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
         report.add(LOGO_ELEMENT)
         report.add(m.Heading(self.tr(
             'Layer keywords missing:'), **WARNING_STYLE))
-        context = m.Message(
-            m.Text(self.tr(
+        context = m.Paragraph(
+            self.tr(
                 'No keywords have been defined for this layer yet. If '
                 'you wish to use it as an impact or hazard layer in a '
-                'scenario, please use the keyword editor. You can open'
-                ' the keyword editor by clicking on the ')),
+                'scenario, please use the keyword editor. You can open '
+                'the keyword editor by clicking on the '),
             m.Image(
                 'file:///%s/img/icons/'
-                'show-keyword-editor.svg' % resources_path(),
-                attributes='width=24 height=24'),
-            m.Text(self.tr(
-                ' icon in the toolbar, or choosing Plugins -> InaSAFE '
-                '-> Keyword Editor from the menu bar.')))
+                'show-keyword-wizard.svg' % resources_path(),
+                **SMALL_ICON_STYLE),
+            self.tr(
+                ' icon in the toolbar.'))
         report.add(context)
         self.pbnPrint.setEnabled(False)
         self.show_static_message(report)

@@ -3,7 +3,6 @@
 from safe.common.tables import TableRow
 from safe.impact_functions.metadata.base import MetadataBase
 from safe.utilities.i18n import tr
-from safe.utilities.keyword_io import KeywordIO
 from safe.common.exceptions import InvalidExtentError
 
 
@@ -312,22 +311,11 @@ class ImpactFunction(object):
             "In the event of a flood like in January 2004, how many people
             will be affected."
         """
-        # function_title = self.metadata.get_function_title(func)
-        # return (tr('In the event of %(hazard)s how many '
-        #            '%(exposure)s might %(impact)s')
-        #         % {'hazard': hazard_title.lower(),
-        #            'exposure': exposure_title.lower(),
-        #
         function_title = self.metadata()['title']
-        keyword_io = KeywordIO()
-        hazard_title = keyword_io.read_keywords(
-            self.hazard, keyword='title')
-        exposure_title = keyword_io.read_keywords(
-            self.exposure, keyword='title')
         return (tr('In the event of <i>%(hazard)s</i> how many '
                    '<i>%(exposure)s</i> might <i>%(impact)s</i>')
-                % {'hazard': hazard_title,
-                   'exposure': exposure_title.lower(),
+                % {'hazard': self.hazard.get_name().lower(),
+                   'exposure': self.exposure.get_name().lower(),
                    'impact': function_title.lower()})
 
     @staticmethod
