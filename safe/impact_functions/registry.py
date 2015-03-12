@@ -31,14 +31,80 @@ class Registry(object):
 
     @classmethod
     def get(cls, name):
-        """Return an instance of an impact function given its name."""
+        """Return an instance of an impact function given its name.
+
+        :param name: the name of IF class
+        :type name: str
+
+        :return: impact function instance
+        :rtype: safe.impact_functions.base.ImpactFunction.instance()
+        """
+        return cls.get_class(name).instance()
+
+    @classmethod
+    def get_class(cls, name):
+        """Return an instance of an impact function given its name.
+
+        :param name: the name of IF class
+        :type name: str
+
+        :return: impact function class
+        :rtype: safe.impact_functions.base.ImpactFunction
+        """
         for impact_function in cls._impact_functions:
             if impact_function.__name__ == name:
-                return impact_function.instance()
+                return impact_function
         raise Exception('Impact function called %s not found' % name)
 
     @classmethod
-    def filter(cls, hazard_keywords, exposure_keywords):
+    def filter_by_keyword_string(cls, hazard_keywords, exposure_keywords):
+        if hazard_keywords is None and exposure_keywords is None:
+            return cls._impact_functions
+
+        impact_functions = cls._impact_functions
+        categories = ['hazard', 'exposure']
+        keywords = {'hazard': hazard_keywords, 'exposure': exposure_keywords}
+        filtered = []
+        for category in categories:
+            for f in impact_functions:
+                f_category = f.metadata()['categories'][category]
+                subcategory = f_category[
+                    'subcategory']
+                subcategory = cls.project_list(
+                    cls.convert_to_list(subcategory), 'id')
+                units = f_category['units']
+                units = cls.project_list(cls.convert_to_list(units), 'id')
+                layer_constraints = cls.convert_to_list(f_category[
+                    'layer_constraints'])
+                layer_types = cls.project_list(layer_constraints, 'layer_type')
+                data_types = cls.project_list(layer_constraints, 'data_type')
+
+                keyword = keywords[category]
+                if keyword.get('subcategory') not in subcategory:
+                    continue
+                if (keyword.get('units') is not None and
+                        keyword.get('units') not in units):
+                    continue
+                if keyword.get('layertype') not in layer_types:
+                    continue
+                if keyword.get('data_type') not in data_types:
+                    continue
+
+                if f not in filtered:
+                    filtered.append(f)
+
+        return filtered
+
+    @classmethod
+    def convert_to_list(cls, var):
+        return var if isinstance(var, list) else [var]
+
+    @classmethod
+    def project_list(cls, the_list, field):
+        return [s[field] for s in the_list]
+
+    @classmethod
+    def filter(cls, hazard_keywords=None, exposure_keywords=None):
         """Filter impact function given the hazard and exposure keywords.
 
         :param hazard_keywords: Dictionary represent hazard keywords
@@ -51,6 +117,9 @@ class Registry(object):
         :rtype: list
 
         """
+        if hazard_keywords is None and exposure_keywords is None:
+            return cls._impact_functions
+
         impact_functions = cls._impact_functions
         impact_functions = cls.filter_by_hazard(
             impact_functions, hazard_keywords)

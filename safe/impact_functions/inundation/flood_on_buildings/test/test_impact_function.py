@@ -1,3 +1,5 @@
+from safe.storage.vector import Vector
+
 __author__ = 'lucernae'
 
 import unittest
@@ -20,39 +22,29 @@ class TestImpactFunction(unittest.TestCase):
 
     def test_run(self):
         function = self.registry.get('FloodImpactFunction')
-        function.extent = [106.7865051, -6.1842385,
-                           106.9091440, -6.2206013]
-        function.extent_crs = [4326]
-        function_parameters = function.parameters
-        for x in function_parameters.values():
-            print '--', x.name, x.value
-        print 'Change value of target field to FLOODED:'
-        function_parameters['flooded_target_field'].value = 'FLOODED'
-        print 'Change value of affected field to FLOODPRONE:'
-        function_parameters['affected_field'].value = 'FLOODPRONE'
-        print 'Change value of affected field to YES:'
-        function_parameters['affected_value'].value = 'YES'
-        for x in function_parameters.values():
-            print '--', x.name, x.value
 
         # Calculate impact using API
         hazard_layer = clone_shp_layer(
-            'Jakarta_RW_2007flood', True, HAZDATA)
+            'test_flood_building_impact_hazard', True, TESTDATA)
         exposure_layer = clone_shp_layer(
-            'OSM_building_polygons_20110905', True, TESTDATA)
+            'test_flood_building_impact_exposure', True, TESTDATA)
 
-        function.hazard = hazard_layer
-        function.exposure = exposure_layer
+        hazard = Vector(data=hazard_layer)
+        exposure = Vector(data=exposure_layer)
 
+        function.hazard = hazard
+        function.exposure = exposure
         function.run()
 
         impact_layer = function.impact
 
         # Extract calculated result
-        icoordinates = impact_layer.featureCount()
+        keywords = impact_layer.get_keywords()
+        buildings_total = keywords['buildings_total']
+        buildings_affected = keywords['buildings_affected']
 
-        # Check
-        print 'Impacted building : ', icoordinates
+        self.assertEqual(buildings_total, 67)
+        self.assertEqual(buildings_affected, 41)
 
     def test_filter(self):
         hazard_keywords = {

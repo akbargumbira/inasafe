@@ -1,5 +1,7 @@
 # coding=utf-8
 """This file is intended to store all available default parameters for IF.."""
+from safe_extras.parameters.float_parameter import FloatParameter
+
 __author__ = 'ismailsunni'
 __project_name = 'impact_function_registry'
 __filename = 'impact_function_parameter'
@@ -66,4 +68,17 @@ def affected_value():
         'This value in \'affected_field\' of the hazard layer marks the areas '
         'as inundated. This is the longer description of this parameter.')
     field.value = '1'  # default value
+    return field
+
+
+def threshold_parameter_field():
+    """
+    Generator for parameter stating what values constitute 'parameters'.
+    """
+    field = FloatParameter()
+    field.name = 'Threshold [m]'
+    field.is_required = True
+    field.help_text = 'Threshold help'
+    field.description = 'Threshold description'
+    field.value = 1.0
     return field

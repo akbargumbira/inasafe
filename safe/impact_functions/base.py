@@ -1,8 +1,9 @@
 # coding=utf-8
 """Abstract base class for all impact functions."""
-
+from safe.common.tables import TableRow
 from safe.impact_functions.metadata.base import MetadataBase
 from safe.utilities.i18n import tr
+from safe.utilities.keyword_io import KeywordIO
 from safe.common.exceptions import InvalidExtentError
 
 
@@ -21,7 +22,7 @@ class ImpactFunction(object):
                 super(FloodImpactFunction, self).__init__()
 
         """
-        self._function_type = 'legacy'  # or 'qgis2'
+        self._function_type = 'qgis2.0'  # or 'legacy'
         # Analysis extent to use
         self._extent = None
         # CRS as EPSG number
@@ -68,6 +69,9 @@ class ImpactFunction(object):
 
         """
         return self._function_type
+
+    def set_extent(self, extent):
+        self.extent = extent
 
     @property
     def extent(self):
@@ -155,6 +159,10 @@ class ImpactFunction(object):
     def parameters(self):
         """Get the parameter for this class."""
         return self._parameters
+
+    @parameters.setter
+    def parameters(self, value):
+        self._parameters = value
 
     def prepare(self):
         """Prepare this impact function for running the analysis.
@@ -309,8 +317,18 @@ class ImpactFunction(object):
         #            '%(exposure)s might %(impact)s')
         #         % {'hazard': hazard_title.lower(),
         #            'exposure': exposure_title.lower(),
-        #            'impact': function_title.lower()})
-        pass
+        #
+        function_title = self.metadata()['title']
+        keyword_io = KeywordIO()
+        hazard_title = keyword_io.read_keywords(
+            self.hazard, keyword='title')
+        exposure_title = keyword_io.read_keywords(
+            self.exposure, keyword='title')
+        return (tr('In the event of <i>%(hazard)s</i> how many '
+                   '<i>%(exposure)s</i> might <i>%(impact)s</i>')
+                % {'hazard': hazard_title,
+                   'exposure': exposure_title.lower(),
+                   'impact': function_title.lower()})
 
     @staticmethod
     def console_progress_callback(current, maximum, message=None):
@@ -331,3 +349,16 @@ class ImpactFunction(object):
         if message is not None:
             print message
         print 'Task progress: %i of %i' % (current, maximum)
+
+    def create_table_string(self):
+        table_body = [
+            self.question(),
+            TableRow(self.tabulated_impact['headings'], header=True),
+            TableRow(self.tabulated_impact['totals']),
+            TableRow(self.tabulated_impact['tabulation_title'], header=True)]
+        for rows in self.tabulated_impact['tabulation']:
+            table_body.append(TableRow(rows))
+        return table_body
+
+    def create_inasafe_layer(self):
+        raise NotImplementedError

@@ -156,7 +156,7 @@ class ImpactCalculator(QObject):
         """
         self._function = str(function_id)
 
-    def get_runner(self):
+    def get_runner(self, parameters=None):
         """ Factory to create a new runner thread.
 
         Requires three parameters to be set before execution can take place:
@@ -196,7 +196,8 @@ class ImpactCalculator(QObject):
             exposure_layer,
             function,
             extent=self.extent(),
-            check_integrity=self.requires_clipping())
+            check_integrity=self.requires_clipping(),
+            parameters=parameters)
 
     def requires_clipping(self):
         """Check to clip or not to clip layers.

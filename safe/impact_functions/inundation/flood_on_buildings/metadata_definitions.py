@@ -12,13 +12,14 @@ from safe.definitions import (
     exposure_structure,
     unit_building_type_type,
     layer_vector_polygon)
+from safe.common.utilities import OrderedDict
 
 from safe.impact_functions.inundation.flood_on_buildings.\
     parameter_definitions import (
         flooded_target_field,
         affected_field,
         building_type_field,
-        affected_value)
+        affected_value, threshold_parameter_field)
 
 
 class FloodImpactMetadata(MetadataBase):
@@ -43,6 +44,7 @@ class FloodImpactMetadata(MetadataBase):
         dict_meta = {
             'id': 'Flood',
             'name': tr('Flood Native Polygon Experimental Function'),
+            'title': tr('Be flooded'),
             'impact': tr('Be-flooded'),
             'author': 'Dmitry Kolesov',
             'date_implemented': 'N/A',
@@ -65,11 +67,16 @@ class FloodImpactMetadata(MetadataBase):
                 }
             },
             'parameters': {
-                'flooded_target_field': flooded_target_field(),
-                'building_type_field': building_type_field(),
-                'affected_field': affected_field(),
-                'affected_value': affected_value()
+                'threshold': threshold_parameter_field()
+                # 'postprocessors':
+                #     {'building_type': building_type_field()}
             }
+            # 'parameters': {
+            #     'target_field': flooded_target_field(),
+            #     'building_type_field': building_type_field(),
+            #     'affected_field': affected_field(),
+            #     'affected_value': affected_value()
+            # }
         }
         return dict_meta
 

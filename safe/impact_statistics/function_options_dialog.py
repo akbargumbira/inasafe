@@ -77,6 +77,7 @@ class FunctionOptionsDialog(QtGui.QDialog, FORM_CLASS):
         self.tabWidget.tabBar().setVisible(False)
 
         self._result = None
+        self.parameters = None
         self.values = OrderedDict()
 
     # noinspection PyCallingNonCallable,PyMethodMayBeStatic
@@ -114,17 +115,23 @@ class FunctionOptionsDialog(QtGui.QDialog, FORM_CLASS):
 
         :param parameters: Parameters to be edited
         """
-
+        self.parameters = parameters
         for key, value in parameters.items():
             if key == 'postprocessors':
                 self.build_post_processor_form(value)
             elif key == 'minimum needs':
                 self.build_minimum_needs_form(value)
             else:
-                self.values[key] = self.build_widget(
-                    self.configLayout,
-                    key,
-                    value)
+                if isinstance(value, str):
+                    self.values[key] = self.build_widget(
+                        self.configLayout,
+                        key,
+                        value)
+                else:
+                    self.values[key] = self.build_widget(
+                        self.configLayout,
+                        key,
+                        value.value)
 
     def build_minimum_needs_form(self, parameters):
         """Build minimum needs tab.
@@ -314,7 +321,11 @@ class FunctionOptionsDialog(QtGui.QDialog, FORM_CLASS):
         result = OrderedDict()
         for name, value in input_dict.items():
             if hasattr(value, '__call__'):
-                result[name] = value()
+                if isinstance(self.parameters[name], str):
+                    result[name] = value()
+                else:
+                    result[name] = self.parameters[name]
+                    result[name].value = value()
             elif isinstance(value, dict):
                 result[name] = self.parse_input(value)
             else:
