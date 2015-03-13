@@ -1,19 +1,11 @@
-# coding=utf-8
-"""This file is intended to store all available default parameters for IF.."""
 from safe_extras.parameters.boolean_parameter import BooleanParameter
-from safe_extras.parameters.float_parameter import FloatParameter
-
-__author__ = 'ismailsunni'
-__project_name = 'impact_function_registry'
-__filename = 'impact_function_parameter'
-__date__ = '8/26/14'
-__copyright__ = 'imajimatika@gmail.com'
-__doc__ = ''
-
+from safe_extras.parameters.group_parameter import GroupParameter
 from safe_extras.parameters.string_parameter import StringParameter
 
+__author__ = 'lucernae'
 
-def flooded_target_field():
+
+def target_field():
     """Generator for the flooded target field parameter."""
     field = StringParameter()
     field.name = 'Target Field'
@@ -23,22 +15,7 @@ def flooded_target_field():
     field.description = (
         'This field of impact layer marks inundated roads by \'1\' value. '
         'This is the longer description of this parameter.')
-    field.value = 'flooded'  # default value
-    return field
-
-
-def building_type_field():
-    """Generator for the building tpe field parameter."""
-    field = BooleanParameter()
-    field.name = 'Building Type Field'
-    field.is_required = True
-    field.help_text = (
-        'This field of the exposure layer contains information about building '
-        'types')
-    field.description = (
-        'This field of the exposure layer contains information about building '
-        'types This is the longer description of this parameter.')
-    field.value = True  # default value
+    field.value = 'INUNDATED'  # default value
     return field
 
 
@@ -72,14 +49,9 @@ def affected_value():
     return field
 
 
-def threshold_parameter_field():
-    """
-    Generator for parameter stating what values constitute 'parameters'.
-    """
-    field = FloatParameter()
-    field.name = 'Threshold [m]'
+def building_type_field():
+    field = BooleanParameter()
+    field.name = 'Building Type Field'
     field.is_required = True
-    field.help_text = 'Threshold help'
-    field.description = 'Threshold description'
-    field.value = 1.0
+    field.value = True
     return field

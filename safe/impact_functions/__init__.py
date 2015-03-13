@@ -24,7 +24,10 @@ def load_plugins():
     from safe.impact_functions.inundation.flood_on_buildings.impact_function\
         import FloodImpactFunction
     reg.register(FloodImpactFunction)
-
+    from safe.impact_functions.inundation.flood_osm_building\
+        .flood_vector_OSM_building_impact import \
+        FloodVectorBuildingImpactFunction
+    reg.register(FloodVectorBuildingImpactFunction)
 
 load_plugins()
 

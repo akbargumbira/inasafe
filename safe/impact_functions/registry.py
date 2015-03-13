@@ -69,7 +69,7 @@ class Registry(object):
             for f in impact_functions:
                 f_category = f.metadata()['categories'][category]
                 subcategory = f_category[
-                    'subcategory']
+                    'subcategories']
                 subcategory = cls.project_list(
                     cls.convert_to_list(subcategory), 'id')
                 units = f_category['units']

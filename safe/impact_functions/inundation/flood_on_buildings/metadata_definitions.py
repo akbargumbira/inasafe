@@ -52,7 +52,7 @@ class FloodImpactMetadata(MetadataBase):
             'categories': {
                 'hazard': {
                     'definition': hazard_definition,
-                    'subcategory': [
+                    'subcategories': [
                         hazard_flood,
                         hazard_tsunami
                     ],
@@ -61,22 +61,16 @@ class FloodImpactMetadata(MetadataBase):
                 },
                 'exposure': {
                     'definition': exposure_definition,
-                    'subcategory': exposure_structure,
+                    'subcategories': exposure_structure,
                     'units': [unit_building_type_type],
                     'layer_constraints': [layer_vector_polygon]
                 }
             },
-            'parameters': {
-                'threshold': threshold_parameter_field()
-                # 'postprocessors':
-                #     {'building_type': building_type_field()}
-            }
-            # 'parameters': {
-            #     'target_field': flooded_target_field(),
-            #     'building_type_field': building_type_field(),
-            #     'affected_field': affected_field(),
-            #     'affected_value': affected_value()
-            # }
+            'parameters': OrderedDict([
+                ('threshold', threshold_parameter_field()),
+                ('postprocessors',
+                 OrderedDict([('BuildingType', {'on': True})]))
+            ])
         }
         return dict_meta
 
