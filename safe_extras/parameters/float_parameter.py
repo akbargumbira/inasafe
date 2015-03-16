@@ -51,6 +51,14 @@ class FloatParameter(NumericParameter):
         """
         self._precision = precision
 
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, val):
+        self._value = float(val)
+
     def serialize(self):
         """Convert the parameter into a dictionary.
 

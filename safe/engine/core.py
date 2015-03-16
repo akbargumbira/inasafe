@@ -9,10 +9,12 @@ from datetime import datetime
 from socket import gethostname
 import getpass
 from PyQt4.QtCore import QSettings
+from safe.impact_functions.base import ImpactFunction
 
 from safe.storage.projection import Projection
 from safe.storage.projection import DEFAULT_PROJECTION
-from safe.impact_functions.core import extract_layers
+from safe.impact_functions.core import extract_layers, get_hazard_layer, \
+    get_exposure_layer
 from safe.common.utilities import unique_filename, verify
 from safe.utilities.i18n import tr
 from safe.utilities.utilities import replace_accentuated_characters
@@ -24,7 +26,8 @@ import logging
 LOGGER = logging.getLogger('InaSAFE')
 
 
-def calculate_impact(layers, impact_fcn, extent=None, check_integrity=True):
+def calculate_impact(layers, impact_fcn, extent=None, check_integrity=True,
+                     parameters=None):
     """Calculate impact levels as a function of list of input layers
 
     Input
@@ -60,15 +63,25 @@ def calculate_impact(layers, impact_fcn, extent=None, check_integrity=True):
 
     # Get an instance of the passed impact_fcn
     impact_function = impact_fcn()
-    # Set extent if it is provided
-    if extent is not None:
-        impact_function.set_extent(extent)
+    if isinstance(impact_function, ImpactFunction):
+        if extent is not None:
+            impact_function.extent = extent
+        start_time = datetime.now()
+        impact_function.hazard = get_hazard_layer(layers)
+        impact_function.exposure = get_exposure_layer(layers)
+        impact_function.parameters = parameters
+        impact_function.run()
+        F = impact_function.impact
+    else:
+        # Set extent if it is provided
+        if extent is not None:
+            impact_function.set_extent(extent)
 
-    # Start time
-    start_time = datetime.now()
+        # Start time
+        start_time = datetime.now()
 
-    # Pass input layers to plugin
-    F = impact_function.run(layers)
+        # Pass input layers to plugin
+        F = impact_function.run(layers)
 
     # End time
     end_time = datetime.now()

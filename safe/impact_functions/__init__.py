@@ -3,6 +3,7 @@ Basic plugin framework based on::
 http://martyalchin.com/2008/jan/10/simple-plugin-framework/
 """
 import os
+from safe.impact_functions.registry import Registry
 
 
 def load_plugins():
@@ -17,7 +18,16 @@ def load_plugins():
                 # Ignore e.g. directories that are not Python modules
                 # FIXME (Ole): Should we emit a warning to the log file?
                 pass
+    reg = Registry()
 
+    # dependency injections
+    from safe.impact_functions.inundation.flood_on_buildings.impact_function\
+        import FloodImpactFunction
+    reg.register(FloodImpactFunction)
+    from safe.impact_functions.inundation.flood_osm_building\
+        .flood_vector_OSM_building_impact import \
+        FloodVectorBuildingImpactFunction
+    reg.register(FloodVectorBuildingImpactFunction)
 
 load_plugins()
 

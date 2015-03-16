@@ -377,6 +377,10 @@ def get_safe_impact_function(function_name=None):
     function_name = unicodedata.normalize(
         'NFKD', function_name).encode('ascii', 'ignore')
     try:
+        # dependency injections to break circular deps
+        # utilities module can't import impact functions module
+        # directly because it is used by impact functions module
+        from safe.impact_functions.core import get_plugins
         return get_plugins(function_name)
     except:
         raise
@@ -413,7 +417,10 @@ def get_safe_impact_function_type(function_id):
         function = function()
 
         try:
-            fun_type = function.get_function_type()
+            if hasattr(function, 'function_type'):
+                fun_type = function.function_type
+            else:
+                fun_type = function.get_function_type()
         except AttributeError:
             fun_type = 'old-style'
     except:

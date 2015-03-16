@@ -22,6 +22,8 @@ from safe.impact_functions.core import FunctionProvider
 from safe.impact_functions.core import get_hazard_layer, get_exposure_layer
 from safe.impact_functions.core import get_question
 from safe.common.tables import Table, TableRow
+from safe.impact_functions.inundation.metadata.\
+    flood_building_impact_qgis_metadata import FloodNativePolygonExperimentalMetadata
 from safe.utilities.i18n import tr
 from safe.storage.vector import Vector
 from safe.common.exceptions import GetDataError
@@ -42,6 +44,15 @@ class FloodNativePolygonExperimentalFunction(FunctionProvider):
                     subcategory in ['structure'] and \
                     layertype=='vector'
     """
+    _metadata = FloodNativePolygonExperimentalMetadata
+
+    def __init__(self):
+        """Constructor (calls ctor of base class)."""
+        super(FloodNativePolygonExperimentalFunction, self).__init__()
+
+        self.hazard_provider = None
+        self.affected_field_index = -1
+
     class Metadata(ImpactFunctionMetadata):
         """Metadata for FloodNativePolygonExperimentalFunction.
 
@@ -61,37 +72,9 @@ class FloodNativePolygonExperimentalFunction(FunctionProvider):
                 concrete impact function.
             :rtype: dict
             """
-            dict_meta = {
-                'id': 'FloodNativePolygonExperimentalFunction',
-                'name': tr('Flood Native Polygon Experimental Function'),
-                'impact': tr('Be-flooded'),
-                'title': tr('Be flooded (experimental)'),
-                'author': 'Dmitry Kolesov',
-                'date_implemented': 'N/A',
-                'overview': tr('N/A'),
-                'detailed_description': tr('N/A'),
-                'hazard_input': '',
-                'exposure_input': '',
-                'output': '',
-                'actions': '',
-                'limitations': [],
-                'citations': [],
-                'categories': {
-                    'hazard': {
-                        'definition': hazard_definition,
-                        'subcategories': [hazard_flood],
-                        'units': [unit_wetdry],
-                        'layer_constraints': [layer_vector_polygon]
-                    },
-                    'exposure': {
-                        'definition': exposure_definition,
-                        'subcategories': [exposure_structure],
-                        'units': [unit_building_type_type],
-                        'layer_constraints': [layer_vector_polygon]
-                    }
-                }
-            }
-            return dict_meta
+            return FloodNativePolygonExperimentalFunction._metadata.as_dict()
+
+    title = tr('Be flooded (experimental)')
 
     parameters = OrderedDict([
         # This field of impact layer marks inundated roads by '1' value
@@ -131,6 +114,8 @@ class FloodNativePolygonExperimentalFunction(FunctionProvider):
               H: Polygon layer of inundation areas
               E: Vector layer of roads
         """
+        self.prepare()
+
         target_field = self.parameters['target_field']
         building_type_field = self.parameters['building_type_field']
         affected_field = self.parameters['affected_field']
@@ -285,4 +270,66 @@ class FloodNativePolygonExperimentalFunction(FunctionProvider):
                 'map_title': map_title,
                 'target_field': target_field},
             style_info=style_info)
+
+        self._tabulate(building_count, buildings_by_type, flooded_count)
+
+        self._style(target_field)
+
+        self._impact = building_layer
+
         return building_layer
+
+    def prepare(self):
+        """Prepare this impact function for running the analysis.
+
+        .. seealso:: impact_functions.base.prepare_for_run()
+
+        Calls the prepare_for_run method of the impact function base class and
+        then implements any specfic checks needed by this impact function.
+
+        :raises: GetDataError
+        """
+        super(FloodNativePolygonExperimentalFunction, self).prepare()
+
+        affected_field = self.parameters()['affected_field']
+        self.hazard_provider = self.hazard.dataProvider()
+        self.affected_field_index = self.hazard_provider.fieldNameIndex(
+            affected_field)
+        if self.affected_field_index == -1:
+            message = tr('''Parameter "Affected Field"(='%s')
+                is not present in the
+                attribute table of the hazard layer.''' % (affected_field, ))
+            raise GetDataError(message)
+
+    def _tabulate(self, building_count, buildings_by_type, flooded_count):
+        """Helper to perform tabulation."""
+        tabulated_impact = dict()
+        tabulated_impact['headings'] = [
+            tr('Building Type'),
+            tr('Flooded'),
+            tr('Total')
+        ]
+        tabulated_impact['totals'] = [
+            tr('All'),
+            int(flooded_count),
+            int(building_count)]
+        tabulated_impact['tabulation_title'] = tr('Breakdown by building type')
+        tabulation = []
+        for t, v in buildings_by_type.iteritems():
+            tabulation.append([t, int(v['flooded']), int(v['total'])])
+        tabulated_impact['tabulation'] = tabulation
+        tabulated_impact['title'] = tr('Buildings inundated')
+        self._tabulated_impact = tabulated_impact
+
+    def _style(self, target_field):
+        """Helper to create style."""
+        style_classes = [
+            dict(label=tr('Not Inundated'), value=0, colour='#1EFC7C',
+                 transparency=0, size=0.5),
+            dict(label=tr('Inundated'), value=1, colour='#F31A1C',
+                 transparency=0, size=0.5)]
+        style_info = dict(
+            target_field=target_field,
+            style_classes=style_classes,
+            style_type='categorizedSymbol')
+        self.style_info = style_info

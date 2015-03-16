@@ -923,7 +923,7 @@ class Analysis(object):
         self.send_not_busy_signal()
         self.send_analysis_done_signal()
 
-    def run_analysis(self):
+    def run_analysis(self, parameters=None):
         """It's similar with run function in previous dock.py"""
         try:
             self.setup_impact_calculator()
@@ -966,7 +966,7 @@ class Analysis(object):
             return
 
         try:
-            self.runner = self.impact_calculator.get_runner()
+            self.runner = self.impact_calculator.get_runner(parameters)
         except (InsufficientParametersError, ReadLayerError), e:
             self.analysis_error(
                 e,

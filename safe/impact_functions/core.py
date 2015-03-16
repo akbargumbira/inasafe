@@ -14,6 +14,7 @@ from collections import OrderedDict
 import keyword as python_keywords
 
 from safe.gis.polygon import inside_polygon
+from safe.impact_functions.registry import Registry
 from safe.utilities.i18n import tr
 from safe.defaults import default_minimum_needs
 from utilities import (
@@ -175,29 +176,29 @@ def get_plugins(name=None):
        Or all of them if no name is passed.
     """
 
-    plugins_dict = dict([(function_name(p), p)
-                         for p in FunctionProvider.plugins])
+    # plugins_dict = dict([(function_name(p), p)
+    #                      for p in FunctionProvider.plugins])
+    registry = Registry()
+    plugins_dict = dict([(f.metadata()['name'], f)
+                         for f in registry.filter()])
 
     if name is None:
         return plugins_dict
+    elif isinstance(name, basestring):
+        # f is an instance of IF class
+        f = registry.get_class(name)
 
-    if isinstance(name, basestring):
-        # Add the names
-        plugins_dict.update(
-            dict([(p.__name__, p) for p in FunctionProvider.plugins]))
-
-        msg = ('No plugin named "%s" was found. '
-               'List of available plugins is: \n%s'
-               % (name, ',\n '.join(plugins_dict.keys())))
-        if name not in plugins_dict:
-            raise RuntimeError(msg)
-
-        return [{name: plugins_dict[name]}]
+        message = ('No plugin named "%s" was found. '
+                   'List of available plugins is: \n%s'
+                   % (name, ',\n '.join(plugins_dict.keys())))
+        if f is None:
+            raise RuntimeError(message)
+        return [{f.__name__: f}]
     else:
-        msg = ('get_plugins expects either no parameters or a string '
-               'with the name of the plugin, you passed: '
-               '%s which is a %s' % (name, type(name)))
-        raise Exception(msg)
+        message = ('get_plugins expects either no parameters or a string '
+                   'with the name of the plugin, you passed: '
+                   '%s which is a %s' % (name, type(name)))
+        raise Exception(message)
 
 
 def get_plugin(name):

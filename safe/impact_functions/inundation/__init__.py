@@ -1,4 +1,5 @@
 import os
+import pydevd
 
 dirname = os.path.dirname(__file__)
 

@@ -139,8 +139,6 @@ def get_function_title(func):
         pretty_function_name.
     :rtype: str
     """
-    try:
-        title = func.Metadata.get_metadata()['title']
-    except KeyError:
-        title = func.__class__.__name__
+    # title = func.Metadata.get_metadata()['title']
+    title = func.metadata()['title']
     return title

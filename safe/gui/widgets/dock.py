@@ -47,7 +47,8 @@ from safe.defaults import (
     disclaimer,
     default_organisation_logo_path,
     default_north_arrow_path)
-from safe.utilities.gis import extent_string_to_array, read_impact_layer
+from safe.utilities.gis import (extent_string_to_array, read_impact_layer,
+                                get_geometry_type_string)
 from safe.utilities.resources import (
     resources_path,
     resource_url,
@@ -97,6 +98,7 @@ from safe_extras.pydispatch import dispatcher
 from safe.utilities.analysis import Analysis
 from safe.utilities.extent import Extent
 from safe.utilities.unicode import get_string, get_unicode
+from safe.impact_functions.registry import Registry
 
 PROGRESS_UPDATE_STYLE = styles.PROGRESS_UPDATE_STYLE
 INFO_STYLE = styles.INFO_STYLE
@@ -741,7 +743,7 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
             function_id = self.get_function_id()
 
             functions = get_safe_impact_function(function_id)
-            self.active_function = functions[0][function_id]
+            self.active_function = functions[0][function_id].instance()
             self.function_parameters = None
             if hasattr(self.active_function, 'parameters'):
                 self.function_parameters = self.active_function.parameters
@@ -994,21 +996,35 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
         # We need to add the layer type to the returned keywords
         if hazard_layer.type() == QgsMapLayer.VectorLayer:
             hazard_keywords['layertype'] = 'vector'
+            hazard_keywords['data_type'] = get_geometry_type_string(
+                hazard_layer)
         elif hazard_layer.type() == QgsMapLayer.RasterLayer:
             hazard_keywords['layertype'] = 'raster'
+            if 'data_type' not in hazard_keywords:
+                hazard_keywords['data_type'] = 'continuous'
 
         # noinspection PyTypeChecker
         exposure_keywords = self.keyword_io.read_keywords(exposure_layer)
         # We need to add the layer type to the returned keywords
         if exposure_layer.type() == QgsMapLayer.VectorLayer:
             exposure_keywords['layertype'] = 'vector'
+            exposure_keywords['data_type'] = get_geometry_type_string(
+                exposure_layer)
         elif exposure_layer.type() == QgsMapLayer.RasterLayer:
             exposure_keywords['layertype'] = 'raster'
+            if 'data_type' not in exposure_keywords:
+                exposure_keywords['data_type'] = 'continuous'
 
         # Find out which functions can be used with these layers
         func_list = [hazard_keywords, exposure_keywords]
         try:
-            func_dict = get_admissible_plugins(func_list)
+            # func_dict = get_admissible_plugins(func_list)
+            registry = Registry()
+            # matched function is a list of IF classess
+            matched_function = registry.filter_by_keyword_string(
+                func_list[0], func_list[1])
+            func_dict = dict([(f.__name__, f) for f in
+                              matched_function])
             # Populate the hazard combo with the available functions
             for myFunctionID in func_dict:
                 function = func_dict[myFunctionID]
@@ -1152,7 +1168,7 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
             self.extent.show_last_analysis_extent(
                 self.analysis.clip_parameters[1])
             # Start the analysis
-            self.analysis.run_analysis()
+            self.analysis.run_analysis(self.function_parameters)
         except InsufficientOverlapError as e:
             context = self.tr(
                 'A problem was encountered when trying to determine the '
@@ -1187,7 +1203,8 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
                 self.accept()
         finally:
             # Set back analysis to not ignore memory warning
-            self.analysis.force_memory = False
+            if self.analysis:
+                self.analysis.force_memory = False
             self.disable_signal_receiver()
 
     def accept_cancelled(self, old_keywords):

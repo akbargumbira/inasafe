@@ -145,7 +145,7 @@ class GenericParameter(object):
         # Checking that the type of _value is the same as the expected _value
         # or same as one type in list of type
         message = (
-            'The type of the _value [%s] does match with the expected '
+            'The type of the _value [%s] doesn\'t match with the expected '
             'type of the parameter [%s].' % (
                 str(type(value)), str(self._expected_type)))
 

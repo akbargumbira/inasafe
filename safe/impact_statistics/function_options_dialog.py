@@ -11,6 +11,8 @@ Contact : ole.moller.nielsen@gmail.com
      (at your option) any later version.
 
 """
+from safe_extras.parameters.generic_parameter import GenericParameter
+from safe_extras.parameters.group_parameter import GroupParameter
 
 __author__ = 'oz@tanoshiistudio.com'
 __revision__ = '$Format:%H$'
@@ -77,6 +79,7 @@ class FunctionOptionsDialog(QtGui.QDialog, FORM_CLASS):
         self.tabWidget.tabBar().setVisible(False)
 
         self._result = None
+        self.parameters = None
         self.values = OrderedDict()
 
     # noinspection PyCallingNonCallable,PyMethodMayBeStatic
@@ -114,17 +117,24 @@ class FunctionOptionsDialog(QtGui.QDialog, FORM_CLASS):
 
         :param parameters: Parameters to be edited
         """
-
+        self.parameters = parameters
         for key, value in parameters.items():
             if key == 'postprocessors':
-                self.build_post_processor_form(value)
+                if isinstance(value, dict):
+                    self.build_post_processor_form(value)
             elif key == 'minimum needs':
                 self.build_minimum_needs_form(value)
             else:
-                self.values[key] = self.build_widget(
-                    self.configLayout,
-                    key,
-                    value)
+                if isinstance(value, str):
+                    self.values[key] = self.build_widget(
+                        self.configLayout,
+                        key,
+                        value)
+                else:
+                    self.values[key] = self.build_widget(
+                        self.configLayout,
+                        key,
+                        value.value)
 
     def build_minimum_needs_form(self, parameters):
         """Build minimum needs tab.
@@ -143,6 +153,61 @@ class FunctionOptionsDialog(QtGui.QDialog, FORM_CLASS):
         self.tabWidget.tabBar().setVisible(True)
         self.values['minimum needs'] = parameter_container.get_parameters
 
+    def build_post_processor_form_group(self, group_parameters):
+        """Build Post Processor Tab from Group Parameter
+
+        :param group_parameters: A group parameter containing groups of
+        parameters
+        :type group_parameters: GroupParameter
+        """
+        # create post processor tab
+        tab = QWidget()
+        form_layout = QFormLayout(tab)
+        form_layout.setLabelAlignment(Qt.AlignLeft)
+        self.tabWidget.addTab(tab, self.tr('Post Processors'))
+        self.tabWidget.tabBar().setVisible(True)
+
+        # create element for the tab
+        values = OrderedDict()
+        for label, options in group_parameters.child.items():
+            input_values = OrderedDict()
+
+            # NOTE (gigih) : 'params' is assumed as dictionary
+            if 'params' in options:
+                group_box = QGroupBox()
+                group_box.setCheckable(True)
+                group_box.setTitle(get_postprocessor_human_name(label))
+
+                # NOTE (gigih): is 'on' always exist??
+                # (MB) should always be there
+                group_box.setChecked(options.get('on'))
+                input_values['on'] = self.bind(group_box, 'checked', bool)
+
+                layout = QFormLayout(group_box)
+                group_box.setLayout(layout)
+
+                # create widget element from 'params'
+                input_values['params'] = OrderedDict()
+                for key, value in options['params'].items():
+                    input_values['params'][key] = self.build_widget(
+                        layout, key, value)
+
+                form_layout.addRow(group_box, None)
+
+            elif 'on' in options:
+                checkbox = QCheckBox()
+                checkbox.setText(get_postprocessor_human_name(label))
+                checkbox.setChecked(options['on'])
+
+                input_values['on'] = self.bind(checkbox, 'checked', bool)
+                form_layout.addRow(checkbox, None)
+            else:
+                raise NotImplementedError('This case is not handled for now')
+
+            values[label] = input_values
+
+        self.values['postprocessors'] = values
+
     def build_post_processor_form(self, parameters):
         """Build Post Processor Tab.
 
@@ -153,7 +218,7 @@ class FunctionOptionsDialog(QtGui.QDialog, FORM_CLASS):
         tab = QWidget()
         form_layout = QFormLayout(tab)
         form_layout.setLabelAlignment(Qt.AlignLeft)
-        self.tabWidget.addTab(tab, self.tr('Postprocessors'))
+        self.tabWidget.addTab(tab, self.tr('Post Processors'))
         self.tabWidget.tabBar().setVisible(True)
 
         # create element for the tab
@@ -314,7 +379,11 @@ class FunctionOptionsDialog(QtGui.QDialog, FORM_CLASS):
         result = OrderedDict()
         for name, value in input_dict.items():
             if hasattr(value, '__call__'):
-                result[name] = value()
+                if isinstance(self.parameters.get(name), GenericParameter):
+                    result[name] = self.parameters[name]
+                    result[name].value = value()
+                else:
+                    result[name] = value()
             elif isinstance(value, dict):
                 result[name] = self.parse_input(value)
             else:
