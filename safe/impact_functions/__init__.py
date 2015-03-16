@@ -2,32 +2,21 @@
 Basic plugin framework based on::
 http://martyalchin.com/2008/jan/10/simple-plugin-framework/
 """
-import os
 from safe.impact_functions.registry import Registry
+from safe.impact_functions.inundation.flood_on_buildings.impact_function \
+    import FloodImpactFunction
+from safe.impact_functions.inundation.flood_osm_building \
+    .flood_vector_OSM_building_impact import \
+    FloodVectorBuildingImpactFunction
 
 
 def load_plugins():
     """Iterate through each plugin dir loading all plugins."""
-    dirname = os.path.dirname(__file__)
-    # Import all the subdirectories
-    for f in os.listdir(dirname):
-        if os.path.isdir(os.path.join(dirname, f)):
-            try:
-                __import__('safe.impact_functions.%s' % f)
-            except (ImportError, ValueError):
-                # Ignore e.g. directories that are not Python modules
-                # FIXME (Ole): Should we emit a warning to the log file?
-                pass
-    reg = Registry()
+    impact_function_registry = Registry()
 
-    # dependency injections
-    from safe.impact_functions.inundation.flood_on_buildings.impact_function\
-        import FloodImpactFunction
-    reg.register(FloodImpactFunction)
-    from safe.impact_functions.inundation.flood_osm_building\
-        .flood_vector_OSM_building_impact import \
-        FloodVectorBuildingImpactFunction
-    reg.register(FloodVectorBuildingImpactFunction)
+    # Register all the Impact Functions
+    impact_function_registry.register(FloodImpactFunction)
+    impact_function_registry.register(FloodVectorBuildingImpactFunction)
 
 load_plugins()
 

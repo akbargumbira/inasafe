@@ -1,5 +1,18 @@
 # coding=utf-8
-"""Abstract base class for all impact functions."""
+"""
+InaSAFE Disaster risk assessment tool by AusAid -**Impact Function Base Class.**
+
+The module provides a high level interface for running SAFE scenarios.
+
+Contact : ole.moller.nielsen@gmail.com
+
+.. note:: This program is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation; either version 2 of the License, or
+     (at your option) any later version.
+
+"""
+
 from safe.common.tables import TableRow
 from safe.impact_functions.metadata.base import MetadataBase
 from safe.utilities.i18n import tr
@@ -68,9 +81,6 @@ class ImpactFunction(object):
 
         """
         return self._function_type
-
-    def set_extent(self, extent):
-        self.extent = extent
 
     @property
     def extent(self):
@@ -160,8 +170,13 @@ class ImpactFunction(object):
         return self._parameters
 
     @parameters.setter
-    def parameters(self, value):
-        self._parameters = value
+    def parameters(self, parameters):
+        """Set the parameters of the impact function.
+
+        :param parameters: Parameter of the impact function.
+        :type parameters: dict
+        """
+        self._parameters = parameters
 
     def prepare(self):
         """Prepare this impact function for running the analysis.

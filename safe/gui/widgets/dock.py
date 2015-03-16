@@ -45,10 +45,10 @@ from safe.utilities.utilities import (
     get_safe_impact_function)
 from safe.defaults import (
     disclaimer,
-    default_organisation_logo_path,
     default_north_arrow_path)
-from safe.utilities.gis import (extent_string_to_array, read_impact_layer,
-                                get_geometry_type_string)
+from safe.utilities.gis import (
+    extent_string_to_array,
+    read_impact_layer)
 from safe.utilities.resources import (
     resources_path,
     resource_url,
@@ -63,9 +63,7 @@ from safe.utilities.styling import (
     set_vector_categorized_style)
 from safe.utilities.impact_calculator import ImpactCalculator
 from safe.impact_functions import load_plugins
-from safe.impact_functions.core import (
-    get_admissible_plugins,
-    get_function_title)
+from safe.impact_functions.core import get_function_title
 from safe.impact_statistics.function_options_dialog import (
     FunctionOptionsDialog)
 from safe.common.utilities import temp_dir
@@ -996,8 +994,12 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
         # We need to add the layer type to the returned keywords
         if hazard_layer.type() == QgsMapLayer.VectorLayer:
             hazard_keywords['layertype'] = 'vector'
-            hazard_keywords['data_type'] = get_geometry_type_string(
-                hazard_layer)
+            if hazard_layer.geometryType() == QGis.Point:
+                hazard_keywords['data_type'] = 'point'
+            elif hazard_layer.geometryType() == QGis.Line:
+                hazard_keywords['data_type'] = 'line'
+            elif hazard_layer.geometryType() == QGis.Polygon:
+                hazard_keywords['data_type'] = 'polygon'
         elif hazard_layer.type() == QgsMapLayer.RasterLayer:
             hazard_keywords['layertype'] = 'raster'
             if 'data_type' not in hazard_keywords:
@@ -1008,27 +1010,19 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
         # We need to add the layer type to the returned keywords
         if exposure_layer.type() == QgsMapLayer.VectorLayer:
             exposure_keywords['layertype'] = 'vector'
-            exposure_keywords['data_type'] = get_geometry_type_string(
-                exposure_layer)
         elif exposure_layer.type() == QgsMapLayer.RasterLayer:
             exposure_keywords['layertype'] = 'raster'
             if 'data_type' not in exposure_keywords:
                 exposure_keywords['data_type'] = 'continuous'
 
         # Find out which functions can be used with these layers
-        func_list = [hazard_keywords, exposure_keywords]
         try:
-            # func_dict = get_admissible_plugins(func_list)
             registry = Registry()
-            # matched function is a list of IF classess
-            matched_function = registry.filter_by_keyword_string(
-                func_list[0], func_list[1])
-            func_dict = dict([(f.__name__, f) for f in
-                              matched_function])
+            impact_functions = registry.filter_by_keyword_string(
+                hazard_keywords, exposure_keywords)
             # Populate the hazard combo with the available functions
-            for myFunctionID in func_dict:
-                function = func_dict[myFunctionID]
-                function_title = get_function_title(function)
+            for impact_function in impact_functions:
+                function_title = get_function_title(impact_function)
 
                 # KEEPING THESE STATEMENTS FOR DEBUGGING UNTIL SETTLED
                 # print
@@ -1042,7 +1036,7 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
                 add_ordered_combo_item(
                     self.cboFunction,
                     function_title,
-                    data=myFunctionID)
+                    data=impact_function)
         except Exception, e:
             raise e
 
@@ -1168,7 +1162,7 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
             self.extent.show_last_analysis_extent(
                 self.analysis.clip_parameters[1])
             # Start the analysis
-            self.analysis.run_analysis(self.function_parameters)
+            self.analysis.run_analysis()
         except InsufficientOverlapError as e:
             context = self.tr(
                 'A problem was encountered when trying to determine the '

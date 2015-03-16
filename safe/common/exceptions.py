@@ -334,5 +334,5 @@ class InvalidAggregationKeywords(Exception):
 
 
 class InvalidExtentError(Exception):
-    """Raised if an extent if not valid."""
+    """Raised if an extent is not valid."""
     pass

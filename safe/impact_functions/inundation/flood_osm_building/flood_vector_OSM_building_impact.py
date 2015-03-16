@@ -13,33 +13,17 @@ Contact : ole.moller.nielsen@gmail.com
 
 import logging
 
-from safe.definitions import (
-    hazard_flood,
-    hazard_tsunami,
-    unit_wetdry,
-    unit_feet_depth,
-    unit_metres_depth,
-    layer_vector_polygon,
-    exposure_structure,
-    unit_building_type_type,
-    hazard_definition,
-    exposure_definition,
-    unit_building_generic,
-    layer_vector_point)
-from safe.common.utilities import OrderedDict, get_osm_building_usage
 from safe.impact_functions.base import ImpactFunction
 from safe.impact_functions.core import (
-    FunctionProvider, get_hazard_layer, get_exposure_layer, get_question)
+    get_hazard_layer, get_exposure_layer, get_question)
 from safe.impact_functions.inundation.flood_osm_building.flood_vector_OSM_building_metadata import \
     FloodMetadata
 from safe.storage.vector import Vector
 from safe.storage.utilities import DEFAULT_ATTRIBUTE
 from safe.utilities.i18n import tr
-from safe.common.utilities import format_int
+from safe.common.utilities import format_int, get_osm_building_usage
 from safe.common.tables import Table, TableRow
 from safe.engine.interpolation import assign_hazard_values_to_exposure_data
-from safe.impact_functions.impact_function_metadata import (
-    ImpactFunctionMetadata)
 
 
 LOGGER = logging.getLogger('InaSAFE')

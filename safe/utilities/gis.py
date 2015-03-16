@@ -193,29 +193,6 @@ def is_polygon_layer(layer):
         return False
 
 
-def get_geometry_type_string(layer):
-    """Get string representation of geometry types of a QgsVectorLayer.
-
-    :param layer: A vector layer.
-    :type layer: QgsVectorLayer, QgsMapLayer
-
-    :returns: String of 'point', 'line', or 'polygon'.
-    :rtype: str
-
-    """
-    types = {QGis.Point: 'point',
-             QGis.Line: 'line',
-             QGis.Polygon: 'polygon'}
-    try:
-        if not layer.type() == QgsMapLayer.VectorLayer:
-            raise AttributeError
-        return types.get(layer.geometryType())
-    except AttributeError:
-        return None
-
-
-
-
 def qgis_version():
     """Get the version of QGIS.
 

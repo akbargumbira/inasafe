@@ -1,14 +1,6 @@
 # coding=utf-8
 """Flood on buildings impact function."""
-from PyQt4.QtCore import QVariant
-from qgis.core import (
-    QgsField,
-    QgsVectorLayer,
-    QgsFeature,
-    QgsRectangle,
-    QgsFeatureRequest,
-    QgsGeometry
-)
+
 from safe.common.tables import Table, TableRow
 from safe.common.utilities import format_int, get_osm_building_usage, verify
 from safe.engine.interpolation import assign_hazard_values_to_exposure_data
