@@ -60,7 +60,7 @@ setup(
     version=get_version(),
     packages=find_packages(include=['safe', 'safe.*']),
     include_package_data=True,
-    package_data={'safe.test': ['data/*']},
+    package_data={'safe': ['test/data/*']},
     license='GPL',
     author='InaSAFE Team',
     author_email='info@inasafe.org',
