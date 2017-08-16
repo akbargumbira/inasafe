@@ -58,8 +58,9 @@ def get_version(version=None):
 setup(
     name='inasafe-core',
     version=get_version(),
-    packages=find_packages(include=['safe', 'safe.*', 'safe.test.data.*']),
+    packages=find_packages(include=['safe', 'safe.*']),
     include_package_data=True,
+    package_data={'safe.test': ['data/*']},
     license='GPL',
     author='InaSAFE Team',
     author_email='info@inasafe.org',
