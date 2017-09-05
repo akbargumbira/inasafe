@@ -333,8 +333,13 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
         self.aggregation_layer_combo.setCurrentIndex(index)
 
         # whether to show or not a custom Logo
+        # AG: resources are moved, use the new path for the first time since
+        # the setting still points to the old logo
         flag = setting('organisation_logo_path', supporters_logo_path(), str)
-        self.organisation_logo_path = flag
+        if not os.path.exists(flag):
+            self.organisation_logo_path = supporters_logo_path()
+        else:
+            self.organisation_logo_path = flag
 
         # Changed default to False for new users in 3.2 - see #2171
         show_logos_flag = setting(
